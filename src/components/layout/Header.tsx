@@ -1,41 +1,59 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Calendar, Phone } from 'lucide-react';
+import Image from 'next/image';
+
+const NAV_ITEMS = [
+  { name: 'Beranda', href: '/' },
+  { name: 'Paket Tour', href: '/paket-tour' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Tentang Kami', href: '/tentang-kami' },
+  { name: 'Kontak', href: '/kontak' },
+];
 
 export default function Header() {
+  const pathname = usePathname();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between max-w-[1250px]">
         
-        {/* Logo Placeholder */}
+        {/* Logo */}
         <div className="flex items-center">
-          <Link href="/" className="flex items-center gap-2">
-            {/* SVG Logo Placeholder representing "Hathaway Journey" */}
-            <div className="text-brand-navy font-black text-xl italic tracking-tighter flex items-center">
-              <span className="text-brand-red mr-1">✈</span> HATHAWAY
-              <span className="text-brand-navy-sec font-medium ml-1">JOURNEY</span>
-            </div>
+          <Link href="/" className="flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="Hathaway Journey Logo" 
+              width={160} 
+              height={50} 
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
-          {[
-            { name: 'Beranda', href: '/', active: true },
-            { name: 'Paket Tour', href: '/paket-tour' },
-            { name: 'Gallery', href: '/gallery' },
-            { name: 'Tentang Kami', href: '/tentang-kami' },
-            { name: 'Kontak', href: '/kontak' },
-          ].map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`text-sm font-semibold transition-colors hover:text-brand-red ${
-                item.active ? 'text-brand-navy border-b-2 border-brand-red pb-1' : 'text-brand-dark'
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const isActive =
+              item.href === '/'
+                ? pathname === '/'
+                : pathname.startsWith(item.href);
+
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`text-sm font-semibold transition-colors hover:text-brand-red ${
+                  isActive ? 'text-brand-navy border-b-2 border-brand-red pb-1' : 'text-brand-dark'
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right Actions */}

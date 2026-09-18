@@ -25,7 +25,7 @@ export default function PopularDestinations() {
       {/* View All */}
       <div className="flex justify-center">
         <Link 
-          href="/destinasi"
+          href="/paket-tour"
           className="flex items-center gap-2 bg-white text-brand-navy border border-gray-300 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-50 transition"
         >
           Lihat Semua Destinasi <ArrowRight size={16} />

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
+import Image from 'next/image';
+
 export default function Footer() {
   return (
     <footer className="bg-brand-dark text-white pt-16 pb-8">
@@ -9,9 +11,14 @@ export default function Footer() {
           
           {/* Column 1: About */}
           <div>
-            <div className="text-white font-black text-xl italic tracking-tighter flex items-center mb-6">
-              <span className="text-brand-red mr-1">✈</span> HATHAWAY
-              <span className="font-medium ml-1">JOURNEY</span>
+            <div className="mb-6 bg-white inline-block px-4 py-2 rounded-xl">
+              <Image 
+                src="/logo.png" 
+                alt="Hathaway Journey Logo" 
+                width={160} 
+                height={50} 
+                className="h-12 w-auto object-contain"
+              />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Hathaway Journey adalah partner perjalanan terpercaya Anda. Kami menyediakan berbagai pilihan paket tour domestik dan internasional dengan pelayanan terbaik.
@@ -36,10 +43,8 @@ export default function Footer() {
               {[
                 { name: 'Beranda', href: '/' },
                 { name: 'Paket Tour', href: '/paket-tour' },
-                { name: 'Destinasi', href: '/destinasi' },
                 { name: 'Gallery', href: '/gallery' },
                 { name: 'Tentang Kami', href: '/tentang-kami' },
-                { name: 'Blog', href: '/blog' },
                 { name: 'Kontak', href: '/kontak' },
               ].map(link => (
                 <li key={link.name}>
