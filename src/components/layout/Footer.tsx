@@ -2,8 +2,15 @@ import Link from 'next/link';
 import { MapPin, Phone, Mail } from 'lucide-react';
 
 import Image from 'next/image';
+import type { ContactSettings, SocialSettings } from '@/src/lib/settings-defaults';
 
-export default function Footer() {
+export default function Footer({ contact, social }: { contact: ContactSettings; social: SocialSettings }) {
+  const socials = [
+    { label: 'IG', name: 'Instagram', href: social.instagram },
+    { label: 'FB', name: 'Facebook', href: social.facebook },
+    { label: 'YT', name: 'YouTube', href: social.youtube },
+  ];
+
   return (
     <footer className="bg-brand-dark text-white pt-16 pb-8">
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
@@ -24,15 +31,18 @@ export default function Footer() {
               Hathaway Journey adalah partner perjalanan terpercaya Anda. Kami menyediakan berbagai pilihan paket tour domestik dan internasional dengan pelayanan terbaik.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold">
-                IG
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold">
-                FB
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold">
-                YT
-              </a>
+              {socials.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href || '#'}
+                  target={item.href ? '_blank' : undefined}
+                  rel={item.href ? 'noopener noreferrer' : undefined}
+                  aria-label={item.name}
+                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold"
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -43,6 +53,7 @@ export default function Footer() {
               {[
                 { name: 'Beranda', href: '/' },
                 { name: 'Paket Tour', href: '/paket-tour' },
+                { name: 'Destinasi', href: '/destinasi' },
                 { name: 'Gallery', href: '/gallery' },
                 { name: 'Tentang Kami', href: '/tentang-kami' },
                 { name: 'Kontak', href: '/kontak' },
@@ -62,15 +73,15 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-gray-400 text-sm">
                 <MapPin size={18} className="text-brand-red shrink-0 mt-0.5" />
-                <span>Jl. Travel Agent No. 123, Jakarta Selatan, 12345, Indonesia</span>
+                <span>{contact.address.replace(/\s*\n\s*/g, ' ')}</span>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-sm">
                 <Phone size={18} className="text-brand-red shrink-0" />
-                <span>+62 800 0000 000</span>
+                <span>{contact.phoneDisplay}</span>
               </li>
               <li className="flex items-center gap-3 text-gray-400 text-sm">
                 <Mail size={18} className="text-brand-red shrink-0" />
-                <span>hello@hathawayjourney.com</span>
+                <span>{contact.email}</span>
               </li>
             </ul>
           </div>

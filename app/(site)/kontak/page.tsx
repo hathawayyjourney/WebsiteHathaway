@@ -1,14 +1,19 @@
-import Header from '@/src/components/layout/Header';
-import Footer from '@/src/components/layout/Footer';
-import WhatsAppFloating from '@/src/components/ui/WhatsAppFloating';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import type { Metadata } from 'next';
+import ContactForm from '@/src/components/contact/ContactForm';
+import { getSetting } from '@/src/server/queries/settings';
 
-export default function KontakPage() {
+export const metadata: Metadata = {
+  title: 'Kontak',
+  description: 'Hubungi tim Hathaway Journey untuk konsultasi perjalanan Anda.',
+};
+
+export default async function KontakPage() {
+  const contact = await getSetting('contact');
+
   return (
     <>
-      <Header />
-      
       <main className="min-h-screen pt-20 pb-20 bg-brand-light">
         <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
           <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
@@ -35,10 +40,8 @@ export default function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-brand-dark mb-1">Alamat Kantor</h4>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        Jl. Travel Agent No. 123, <br/>
-                        Jakarta Selatan, 12345, <br/>
-                        DKI Jakarta, Indonesia
+                      <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                        {contact.address}
                       </p>
                     </div>
                   </div>
@@ -49,7 +52,7 @@ export default function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-brand-dark mb-1">Telepon & WhatsApp</h4>
-                      <p className="text-sm text-gray-600">+62 800 0000 000</p>
+                      <p className="text-sm text-gray-600">{contact.phoneDisplay}</p>
                     </div>
                   </div>
 
@@ -59,7 +62,7 @@ export default function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-brand-dark mb-1">Email</h4>
-                      <p className="text-sm text-gray-600">hello@hathawayjourney.com</p>
+                      <p className="text-sm text-gray-600">{contact.email}</p>
                     </div>
                   </div>
 
@@ -69,10 +72,8 @@ export default function KontakPage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-brand-dark mb-1">Jam Operasional</h4>
-                      <p className="text-sm text-gray-600">
-                        Senin - Jumat: 09.00 - 17.00 <br/>
-                        Sabtu: 09.00 - 14.00 <br/>
-                        Minggu: Libur
+                      <p className="text-sm text-gray-600 whitespace-pre-line">
+                        {contact.hours}
                       </p>
                     </div>
                   </div>
@@ -84,53 +85,23 @@ export default function KontakPage() {
             <div className="w-full lg:w-2/3">
               <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-sm border border-gray-100">
                 <h2 className="text-xl font-bold text-brand-navy mb-8">Kirim Pesan</h2>
-                <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                      <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition" placeholder="Masukkan nama Anda" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">WhatsApp</label>
-                      <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition" placeholder="Contoh: 08123456789" />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                      <input type="email" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition" placeholder="Masukkan alamat email" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Subjek</label>
-                      <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition" placeholder="Subjek pesan" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Pesan</label>
-                    <textarea rows={5} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy focus:ring-1 focus:ring-brand-navy transition resize-none" placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."></textarea>
-                  </div>
-
-                  <button type="button" className="bg-brand-navy hover:bg-brand-navy-sec text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition shadow-md w-full sm:w-auto">
-                    <Send size={18} />
-                    Kirim Pesan
-                  </button>
-                </form>
+                <ContactForm />
               </div>
             </div>
           </div>
 
           {/* Google Maps Placeholder */}
           <div className="mt-12 w-full h-[400px] bg-gray-200 rounded-[20px] overflow-hidden border border-gray-200 flex items-center justify-center">
-            <span className="text-gray-500 font-semibold">Google Maps Embed Placeholder</span>
+            {contact.mapsEmbedUrl ? (
+              <iframe src={contact.mapsEmbedUrl} title="Lokasi Hathaway Journey" className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+            ) : (
+              <span className="text-gray-500 font-semibold">Google Maps Embed Placeholder</span>
+            )}
           </div>
 
         </div>
       </main>
 
-      <Footer />
-      <WhatsAppFloating />
     </>
   );
 }

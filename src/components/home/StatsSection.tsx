@@ -1,12 +1,10 @@
 import { Users, Briefcase, Globe2, Award } from 'lucide-react';
+import type { HomeStat } from '@/src/lib/settings-defaults';
 
-export default function StatsSection() {
-  const stats = [
-    { icon: Users, value: '10.000+', label: 'Happy Customer' },
-    { icon: Briefcase, value: '500+', label: 'Paket Tour' },
-    { icon: Globe2, value: '50+', label: 'Destinasi' },
-    { icon: Award, value: '5+', label: 'Tahun Pengalaman' }
-  ];
+const ICONS = [Users, Briefcase, Globe2, Award];
+
+export default function StatsSection({ items }: { items: HomeStat[] }) {
+  const stats = items.map((item, idx) => ({ ...item, icon: ICONS[idx % ICONS.length] }));
 
   return (
     <section className="py-12 container mx-auto px-4 lg:px-8 max-w-[1250px]">

@@ -1,4 +1,4 @@
-export type PackageBadge = 'HOT DEAL' | 'BEST SELLER' | 'POPULAR' | 'FAVORITE';
+export type PackageBadge = 'HOT DEAL' | 'BEST SELLER' | 'POPULAR' | 'FAVORITE' | 'PROMO';
 
 export interface PackageData {
   id: string;

@@ -1,39 +1,11 @@
 import { ShieldCheck, ThumbsUp, Headphones, Award, Users, CreditCard } from 'lucide-react';
+import type { HomeBenefit } from '@/src/lib/settings-defaults';
 
-const benefits = [
-  {
-    icon: ShieldCheck,
-    title: 'Travel Terpercaya',
-    desc: 'Legal & Berizin Resmi'
-  },
-  {
-    icon: ThumbsUp,
-    title: 'Harga Terbaik',
-    desc: 'Harga Kompetitif'
-  },
-  {
-    icon: Headphones,
-    title: 'Customer Service 24/7',
-    desc: 'Siap Membantu Anda'
-  },
-  {
-    icon: Award,
-    title: 'Paket Lengkap',
-    desc: 'Fasilitas Terbaik'
-  },
-  {
-    icon: Users,
-    title: 'Berpengalaman & Profesional',
-    desc: 'Tim Berpengalaman'
-  },
-  {
-    icon: CreditCard,
-    title: 'Pembayaran Mudah',
-    desc: 'Aman & Terpercaya'
-  }
-];
+const ICONS = [ShieldCheck, ThumbsUp, Headphones, Award, Users, CreditCard];
 
-export default function TrustBenefits() {
+export default function TrustBenefits({ items }: { items: HomeBenefit[] }) {
+  const benefits = items.map((item, idx) => ({ ...item, icon: ICONS[idx % ICONS.length] }));
+
   return (
     <section className="py-12 bg-transparent container mx-auto px-4 lg:px-8 max-w-[1250px]">
       <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-sm border border-gray-100 flex flex-wrap justify-between gap-6">

@@ -1,25 +1,30 @@
-import Header from '@/src/components/layout/Header';
-import Footer from '@/src/components/layout/Footer';
-import WhatsAppFloating from '@/src/components/ui/WhatsAppFloating';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import FilterPanel from '@/src/components/package/FilterPanel';
 import PackageCard from '@/src/components/package/PackageCard';
 import Pagination from '@/src/components/ui/Pagination';
-import { recommendedPackages } from '@/src/data/mock';
-import { ChevronDown, SlidersHorizontal } from 'lucide-react';
+import SortSelect from '@/src/components/package/SortSelect';
+import { SlidersHorizontal } from 'lucide-react';
+import type { Metadata } from 'next';
+import { getPackageFilterOptions, searchPackages } from '@/src/server/queries/packages';
+import { PAGE_SIZE, parsePackageSearchParams } from '@/src/lib/package-filters';
 
-export default function PaketTourPage() {
-  // Duplicate packages to simulate a full grid (12 items)
-  const packages = [
-    ...recommendedPackages,
-    ...recommendedPackages.map(p => ({ ...p, id: p.id + '-2' })),
-    ...recommendedPackages.map(p => ({ ...p, id: p.id + '-3' })),
-  ];
+export const metadata: Metadata = {
+  title: 'Paket Tour',
+  description: 'Temukan paket tour domestik dan internasional terbaik dari Hathaway Journey.',
+};
+
+export default async function PaketTourPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const filters = parsePackageSearchParams(sp);
+  const [{ items: packages, total, page, totalPages }, options] = await Promise.all([
+    searchPackages(filters),
+    getPackageFilterOptions(),
+  ]);
+  const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const to = Math.min(page * PAGE_SIZE, total);
 
   return (
     <>
-      <Header />
-      
       <main className="min-h-screen pt-20 pb-20 bg-brand-light">
         
         {/* Page Hero Area */}
@@ -41,9 +46,10 @@ export default function PaketTourPage() {
 
           <div className="flex flex-col lg:flex-row gap-8">
             
-            {/* Sidebar / Filters (Hidden on mobile initially, or stacked) */}
-            <aside className="w-full lg:w-1/4">
-              <FilterPanel />
+            {/* Sidebar / Filters (hidden on mobile until the Filter button is tapped) */}
+            <input id="mobile-filter-toggle" type="checkbox" className="peer sr-only" />
+            <aside className="w-full lg:w-1/4 hidden peer-checked:block lg:block">
+              <FilterPanel current={filters} destinations={options.destinations} categories={options.categories} />
             </aside>
 
             {/* Main Content Area */}
@@ -52,37 +58,35 @@ export default function PaketTourPage() {
               {/* Sorting & Result Info */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 bg-white p-4 rounded-[20px] border border-gray-100 shadow-sm">
                 <p className="text-sm text-gray-600">
-                  Menampilkan <span className="font-bold text-brand-dark">1-12</span> dari <span className="font-bold text-brand-dark">120</span> paket
+                  Menampilkan <span className="font-bold text-brand-dark">{from}-{to}</span> dari <span className="font-bold text-brand-dark">{total}</span> paket
                 </p>
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   {/* Mobile Filter Trigger */}
-                  <button className="lg:hidden flex items-center justify-center gap-2 bg-gray-100 px-4 py-2 rounded-xl text-sm font-semibold flex-1">
+                  <label htmlFor="mobile-filter-toggle" className="lg:hidden flex items-center justify-center gap-2 bg-gray-100 px-4 py-2 rounded-xl text-sm font-semibold flex-1 cursor-pointer">
                     <SlidersHorizontal size={16} /> Filter
-                  </button>
+                  </label>
                   
                   {/* Sorting Dropdown */}
-                  <div className="relative flex-1 sm:w-48">
-                    <select className="w-full appearance-none bg-gray-50 border border-gray-200 text-sm font-semibold text-brand-dark px-4 py-2 pr-10 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-navy cursor-pointer">
-                      <option>Recommended</option>
-                      <option>Terbaru</option>
-                      <option>Harga Terendah</option>
-                      <option>Harga Tertinggi</option>
-                      <option>Terpopuler</option>
-                    </select>
-                    <ChevronDown size={16} className="absolute right-3 top-2.5 text-gray-500 pointer-events-none" />
-                  </div>
+                  <SortSelect value={filters.sort} />
                 </div>
               </div>
 
               {/* Package Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {packages.map(pkg => (
-                  <PackageCard key={pkg.id} data={pkg} />
-                ))}
-              </div>
+              {packages.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {packages.map(pkg => (
+                    <PackageCard key={pkg.id} data={pkg} />
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white rounded-[20px] border border-gray-100 shadow-sm p-10 text-center">
+                  <p className="font-bold text-brand-navy mb-2">Paket tidak ditemukan</p>
+                  <p className="text-sm text-brand-muted">Coba ubah atau reset filter pencarian Anda.</p>
+                </div>
+              )}
 
               {/* Pagination */}
-              <Pagination />
+              <Pagination page={page} totalPages={totalPages} basePath="/paket-tour" searchParams={sp} />
 
             </div>
 
@@ -91,8 +95,6 @@ export default function PaketTourPage() {
 
       </main>
 
-      <Footer />
-      <WhatsAppFloating />
     </>
   );
 }

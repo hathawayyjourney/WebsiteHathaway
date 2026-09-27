@@ -1,7 +1,7 @@
 import { Phone } from 'lucide-react';
 import Image from 'next/image';
 
-export default function FinalCTA() {
+export default function FinalCTA({ whatsappHref }: { whatsappHref: string }) {
   return (
     <section className="py-16 container mx-auto px-4 lg:px-8 max-w-[1250px]">
       <div className="relative rounded-3xl overflow-hidden bg-brand-softblue flex flex-col md:flex-row items-center justify-between p-8 lg:p-12 min-h-[300px]">
@@ -27,7 +27,7 @@ export default function FinalCTA() {
 
         <div className="relative z-10 w-full md:w-auto flex justify-center md:justify-end">
           <a 
-            href="https://wa.me/628000000000"
+            href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-brand-wa hover:bg-green-600 text-white px-8 py-5 rounded-full font-bold flex items-center justify-center gap-3 transition shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto"

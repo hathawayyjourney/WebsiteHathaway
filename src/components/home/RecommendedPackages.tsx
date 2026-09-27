@@ -1,9 +1,9 @@
-import { recommendedPackages } from '../../data/mock';
 import PackageCard from '../package/PackageCard';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import type { PackageData } from '../../types';
 
-export default function RecommendedPackages() {
+export default function RecommendedPackages({ packages }: { packages: PackageData[] }) {
   return (
     <section className="py-16 container mx-auto px-4 lg:px-8 max-w-[1250px]">
       
@@ -17,7 +17,7 @@ export default function RecommendedPackages() {
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        {recommendedPackages.map(pkg => (
+        {packages.map(pkg => (
           <PackageCard key={pkg.id} data={pkg} />
         ))}
       </div>
