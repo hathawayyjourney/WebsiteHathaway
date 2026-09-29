@@ -1,6 +1,7 @@
 // Seeds sample content (converted from the original mock data) and the first admin.
 // Usage: npm run db:seed            → only fills empty tables
 //        npm run db:seed -- --reset → wipes content tables first (never users)
+//        npm run db:seed -- --admin-only → only the admin account + default settings (production)
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { drizzle } from 'drizzle-orm/mysql2';
@@ -120,6 +121,7 @@ const LEGAL = ['ASITA Member', 'IATA Certified', 'Kemenpar Registered'];
 
 async function main() {
   const reset = process.argv.includes('--reset');
+  const adminOnly = process.argv.includes('--admin-only');
   const conn = await mysql.createConnection({ uri: process.env.DATABASE_URL! });
   const db = drizzle(conn, { schema: s, mode: 'default' });
 
@@ -148,6 +150,12 @@ async function main() {
   // Settings (insert missing keys only)
   for (const [key, value] of Object.entries(SETTINGS_DEFAULTS)) {
     await db.insert(s.settings).values({ key, value }).onDuplicateKeyUpdate({ set: { key: sql`\`key\`` } });
+  }
+
+  if (adminOnly) {
+    console.log('Admin account & default settings ready (--admin-only: no sample content).');
+    await conn.end();
+    return;
   }
 
   const [{ count }] = await db.select({ count: sql<number>`count(*)` }).from(s.packages);
