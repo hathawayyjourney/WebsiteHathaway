@@ -1,9 +1,9 @@
-import { popularDestinations } from '../../data/mock';
 import DestinationCard from '../destination/DestinationCard';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import type { HomeRegion } from '@/src/lib/settings-defaults';
 
-export default function PopularDestinations() {
+export default function PopularDestinations({ regions }: { regions: HomeRegion[] }) {
   return (
     <section className="py-8 container mx-auto px-4 lg:px-8 max-w-[1250px]">
       
@@ -17,15 +17,18 @@ export default function PopularDestinations() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
-        {popularDestinations.map(dest => (
-          <DestinationCard key={dest.id} data={dest} />
+        {regions.map(item => (
+          <DestinationCard
+            key={item.region}
+            data={{ id: item.region, name: item.label, image: item.image, href: `/destinasi?region=${item.region.toLowerCase()}` }}
+          />
         ))}
       </div>
 
       {/* View All */}
       <div className="flex justify-center">
         <Link 
-          href="/paket-tour"
+          href="/destinasi"
           className="flex items-center gap-2 bg-white text-brand-navy border border-gray-300 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-50 transition"
         >
           Lihat Semua Destinasi <ArrowRight size={16} />

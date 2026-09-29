@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Plane, Phone } from 'lucide-react';
 
-export default function HeroSection() {
+export default function HeroSection({ whatsappHref }: { whatsappHref: string }) {
   return (
     <section className="relative pt-20 lg:pt-28 pb-32 lg:pb-48 flex items-center min-h-[600px] bg-brand-light">
       {/* Background Image Setup - Using an absolute div with next/image or background image */}
@@ -39,7 +39,7 @@ export default function HeroSection() {
             </Link>
             
             <a 
-              href="https://wa.me/628000000000"
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-brand-navy border-2 border-brand-navy px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition shadow-sm"
