@@ -6,6 +6,7 @@ import { getImage } from '@/src/lib/images';
 import DestinationCard from '@/src/components/destination/DestinationCard';
 import { REGIONS, type Region } from '@/src/db/enums';
 import { listDestinations, REGION_LABELS } from '@/src/server/queries/destinations';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Destinasi',
@@ -47,9 +48,9 @@ export default async function DestinasiPage({ searchParams }: { searchParams: Pr
 
         {destinations.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {destinations.map((d) => (
+            {destinations.map((d, i) => (
+              <Reveal key={d.id} delay={(i % 4) * 80}>
               <DestinationCard
-                key={d.id}
                 data={{
                   id: d.slug,
                   name: d.name.toUpperCase(),
@@ -57,6 +58,7 @@ export default async function DestinasiPage({ searchParams }: { searchParams: Pr
                   subtitle: `${d.packageCount} Paket • ${REGION_LABELS[d.region]}`,
                 }}
               />
+              </Reveal>
             ))}
           </div>
         ) : (

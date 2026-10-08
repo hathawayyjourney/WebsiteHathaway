@@ -7,6 +7,7 @@ import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
 import { getTestimonials } from '@/src/server/queries/content';
 import { formatDate } from '@/src/lib/format';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Testimoni',
@@ -25,8 +26,9 @@ export default async function TestimoniPage() {
 
         {testimonials.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <figure key={t.id} className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 flex flex-col">
+            {testimonials.map((t, i) => (
+              <Reveal key={t.id} delay={(i % 3) * 80} className="h-full">
+              <figure className="h-full bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 flex flex-col">
                 <div className="flex gap-1 mb-4 text-orange-400" aria-label={`Rating ${t.rating} dari 5`}>
                   {Array.from({ length: 5 }, (_, i) => (
                     <Star key={i} size={16} fill={i < t.rating ? 'currentColor' : 'none'} className={i < t.rating ? '' : 'text-gray-300'} />
@@ -45,6 +47,7 @@ export default async function TestimoniPage() {
                   </div>
                 </figcaption>
               </figure>
+              </Reveal>
             ))}
           </div>
         ) : (

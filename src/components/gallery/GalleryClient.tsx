@@ -6,6 +6,7 @@ import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
 import type { SiteImage } from '@/src/lib/image-assets';
 import { PHOTO_CATEGORIES as DB_PHOTO_CATEGORIES } from '@/src/db/enums';
+import Reveal from '@/src/components/ui/Reveal';
 
 const TABS = ['FOTO', 'VIDEO TOUR', 'VIDEO TESTIMONI'];
 const PHOTO_CATEGORIES = ['Semua', ...DB_PHOTO_CATEGORIES];
@@ -95,19 +96,21 @@ export default function GalleryClient({
           {/* Grid Content */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {activeTab === 'FOTO' ? (
-              filteredPhotos.map((photo) => (
-                <div 
-                  key={photo.id} 
+              filteredPhotos.map((photo, i) => (
+                <Reveal key={photo.id} delay={(i % 3) * 80}>
+                <div
                   className="relative h-64 rounded-2xl overflow-hidden cursor-pointer group shadow-sm hover:shadow-md transition"
                   onClick={() => setLightboxImg(photo.url)}
                 >
                   <Image src={photo.url} alt={photo.title || photo.category} fill className="object-cover group-hover:scale-110 transition duration-500" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
                 </div>
+                </Reveal>
               ))
             ) : (
-              filteredVideos.map((video) => (
-                <div key={video.id} className="relative h-64 rounded-2xl overflow-hidden group shadow-sm cursor-pointer" onClick={() => video.videoUrl && setActiveVideo(video.videoUrl)}>
+              filteredVideos.map((video, i) => (
+                <Reveal key={video.id} delay={(i % 3) * 80}>
+                <div className="relative h-64 rounded-2xl overflow-hidden group shadow-sm cursor-pointer" onClick={() => video.videoUrl && setActiveVideo(video.videoUrl)}>
                   <Image src={video.thumb} alt={video.title} fill className="object-cover group-hover:scale-105 transition duration-500" />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition"></div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -117,6 +120,7 @@ export default function GalleryClient({
                     <p className="text-white font-bold text-center px-4">{video.title}</p>
                   </div>
                 </div>
+                </Reveal>
               ))
             )}
           </div>

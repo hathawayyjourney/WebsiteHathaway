@@ -5,14 +5,14 @@ import { PackageData } from '../../types';
 
 export default function PackageCard({ data }: { data: PackageData }) {
   return (
-    <div className="bg-white rounded-[20px] shadow-sm hover:shadow-md transition overflow-hidden border border-gray-100 flex flex-col h-full">
+    <div className="group hover-lift bg-white rounded-[20px] shadow-sm hover:shadow-md transition overflow-hidden border border-gray-100 flex flex-col h-full">
       {/* Image Area */}
       <div className="relative h-48 w-full bg-gray-200">
         <Image 
           src={data.image}
           alt={data.name}
           fill
-          className="object-cover"
+          className="object-cover zoom-on-hover"
         />
         {/* Top Badges */}
         <div className="absolute top-0 left-0 right-0 flex justify-between p-3">

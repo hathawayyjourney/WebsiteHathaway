@@ -1,12 +1,14 @@
 import { Phone } from 'lucide-react';
 import Image from 'next/image';
 import { getImage } from '@/src/lib/images';
+import Reveal from '@/src/components/ui/Reveal';
 
 export default function FinalCTA({ whatsappHref }: { whatsappHref: string }) {
   const background = getImage('homeCta');
 
   return (
     <section className="py-16 container mx-auto px-4 lg:px-8 max-w-[1250px]">
+      <Reveal>
       <div className="relative rounded-3xl overflow-hidden bg-brand-softblue flex flex-col md:flex-row items-center justify-between p-8 lg:p-12 min-h-[300px]">
         {/* Background Image Area (Optional or half screen) */}
         {background && (
@@ -36,7 +38,7 @@ export default function FinalCTA({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-brand-wa hover:bg-green-600 text-white px-8 py-5 rounded-full font-bold flex items-center justify-center gap-3 transition shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto"
+            className="bg-brand-wa hover:bg-green-600 text-white px-8 py-5 rounded-full font-bold flex items-center justify-center gap-3 transition btn-press shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto"
           >
             <div className="bg-white/20 p-1 rounded-full">
               <Phone size={24} fill="currentColor" className="text-white" />
@@ -48,6 +50,7 @@ export default function FinalCTA({ whatsappHref }: { whatsappHref: string }) {
           </a>
         </div>
       </div>
+      </Reveal>
     </section>
   );
 }

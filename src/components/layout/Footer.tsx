@@ -25,7 +25,7 @@ export default function Footer({ contact, social }: { contact: ContactSettings; 
           aria-hidden
           fill
           sizes="100vw"
-          className="object-cover object-center pointer-events-none select-none"
+          className="object-cover object-center pointer-events-none select-none anim-breathe"
           style={{ filter: 'invert(1)', mixBlendMode: 'screen', opacity: 0.16 }}
         />
       )}

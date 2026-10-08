@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import ContactForm from '@/src/components/contact/ContactForm';
 import CardImage from '@/src/components/ui/CardImage';
 import { getSetting } from '@/src/server/queries/settings';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Kontak',
@@ -29,7 +30,7 @@ export default async function KontakPage() {
 
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Contact Info */}
-            <div className="w-full lg:w-1/3">
+            <Reveal className="w-full lg:w-1/3">
               <div className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 h-full">
                 <CardImage image={getImage('contactOffice')} className="h-44" />
                 <h2 className="text-xl font-bold text-brand-navy mb-8">Informasi Kontak</h2>
@@ -80,15 +81,15 @@ export default async function KontakPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Contact Form */}
-            <div className="w-full lg:w-2/3">
+            <Reveal delay={100} className="w-full lg:w-2/3">
               <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-sm border border-gray-100">
                 <h2 className="text-xl font-bold text-brand-navy mb-8">Kirim Pesan</h2>
                 <ContactForm />
               </div>
-            </div>
+            </Reveal>
           </div>
 
           {/* Google Maps Placeholder */}

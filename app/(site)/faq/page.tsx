@@ -8,6 +8,7 @@ import { FAQ_GROUPS } from '@/src/db/enums';
 import { getFaqs } from '@/src/server/queries/content';
 import { getSettings } from '@/src/server/queries/settings';
 import { waLink } from '@/src/lib/whatsapp';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'FAQ',
@@ -35,7 +36,7 @@ export default async function FaqPage() {
 
         <div className="space-y-8">
           {groups.map(({ group, items }) => (
-            <section key={group} className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100">
+            <Reveal key={group}><section className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100">
               <h2 className="text-xl font-bold text-brand-navy mb-4">{group}</h2>
               <div className="divide-y divide-gray-100">
                 {items.map((faq) => (
@@ -48,12 +49,12 @@ export default async function FaqPage() {
                   </details>
                 ))}
               </div>
-            </section>
+            </section></Reveal>
           ))}
           {groups.length === 0 && <p className="text-center text-sm text-brand-muted py-10">Belum ada FAQ.</p>}
 
           {/* Still have questions? */}
-          <section className="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden flex flex-col sm:flex-row">
+          <Reveal><section className="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden flex flex-col sm:flex-row">
             {helpImage && (
               <div className="relative h-48 sm:h-auto sm:w-2/5 shrink-0">
                 <Image src={helpImage.src} alt={helpImage.alt} fill sizes="(min-width: 640px) 360px, 100vw" className="object-cover" />
@@ -66,12 +67,12 @@ export default async function FaqPage() {
                 href={waLink(contact.whatsapp, wa_templates.general)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="self-start inline-flex items-center gap-2 bg-brand-wa hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition shadow-md"
+                className="self-start inline-flex items-center gap-2 bg-brand-wa hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition btn-press shadow-md"
               >
                 <Phone size={18} fill="currentColor" /> Chat via WhatsApp
               </a>
             </div>
-          </section>
+          </section></Reveal>
         </div>
       </div>
     </main>

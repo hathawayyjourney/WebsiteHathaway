@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { PackageData } from '../../types';
 import Decor from '../ui/Decor';
 import { getImage } from '@/src/lib/images';
+import Reveal from '@/src/components/ui/Reveal';
 
 export default function RecommendedPackages({ packages }: { packages: PackageData[] }) {
   const worldMap = getImage('decorWorldMap');
@@ -16,20 +17,22 @@ export default function RecommendedPackages({ packages }: { packages: PackageDat
         <Image src={worldMap.src} alt="" aria-hidden fill sizes="1250px" className="object-contain object-top opacity-[0.06] pointer-events-none" />
       )}
       <Decor image={getImage('decorAirplane')} className="-top-2 left-0 xl:left-6 w-44 -rotate-6" />
-      <Decor image={getImage('decorSuitcase')} className="-top-8 right-0 xl:right-8 w-28 rotate-6" />
+      <Decor image={getImage('decorSuitcase')} className="-top-8 right-0 xl:right-8 w-28 rotate-6" floatDelay={1.5} />
 
       {/* Section Title */}
-      <div className="relative text-center mb-12">
+      <Reveal className="relative text-center mb-12">
         <h2 className="text-2xl lg:text-3xl font-black text-brand-navy tracking-tight">PAKET REKOMENDASI</h2>
         <div className="w-16 h-1 bg-brand-red mx-auto mt-2 rounded-full relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-1 bg-brand-navy"></div>
         </div>
-      </div>
+      </Reveal>
 
       {/* Grid */}
       <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        {packages.map(pkg => (
-          <PackageCard key={pkg.id} data={pkg} />
+        {packages.map((pkg, i) => (
+          <Reveal key={pkg.id} delay={i * 80} className="h-full">
+            <PackageCard data={pkg} />
+          </Reveal>
         ))}
       </div>
 

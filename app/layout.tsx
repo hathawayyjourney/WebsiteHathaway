@@ -29,6 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
+      <head>
+        {/* Scroll-reveal elements start hidden via CSS; without JavaScript, show them right away. */}
+        <noscript>
+          <style>{'.reveal{opacity:1!important;transform:none!important}'}</style>
+        </noscript>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-brand-light text-brand-dark`}>
         {children}
         <GoogleAnalytics />

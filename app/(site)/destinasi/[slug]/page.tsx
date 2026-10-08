@@ -11,6 +11,7 @@ import { getDestinationBySlug, REGION_LABELS } from '@/src/server/queries/destin
 import { getRelatedPackages } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
 import { waLink } from '@/src/lib/whatsapp';
+import Reveal from '@/src/components/ui/Reveal';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -88,8 +89,10 @@ export default async function DestinationDetailPage({ params }: Props) {
 
         {packages.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            {packages.map((pkg) => (
-              <PackageCard key={pkg.id} data={pkg} />
+            {packages.map((pkg, i) => (
+              <Reveal key={pkg.id} delay={(i % 4) * 80} className="h-full">
+                <PackageCard data={pkg} />
+              </Reveal>
             ))}
           </div>
         ) : (

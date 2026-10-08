@@ -25,3 +25,186 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* ==========================================================================
+   Motion (public site). Plain CSS on purpose: Tailwind v4 transform/blur
+   utilities rely on @property / color-mix, which older Safari drops.
+   Easing and timing are shared so every animation feels the same.
+   ========================================================================== */
+
+:root {
+  --hj-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes hj-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hj-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes hj-ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+@keyframes hj-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes hj-pulse-ring {
+  0% { transform: scale(1); opacity: 0.45; }
+  70%, 100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes hj-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hj-breathe {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.2; }
+}
+
+/* Scroll reveal. Hidden until <Reveal> marks it .is-visible; the <noscript> style in
+   app/layout.tsx and the reduced-motion block below keep content visible otherwise. */
+.reveal {
+  transition: opacity 0.6s var(--hj-ease), transform 0.6s var(--hj-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Entrance on page load (hero texts, page titles). */
+.anim-fade-up {
+  animation: hj-fade-up 0.7s var(--hj-ease) both;
+  animation-delay: var(--anim-delay, 0ms);
+}
+.anim-ken-burns {
+  animation: hj-ken-burns 20s ease-out both alternate infinite;
+}
+.anim-float {
+  animation: hj-float var(--float-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+.anim-slide-down {
+  animation: hj-slide-down 0.25s var(--hj-ease) both;
+}
+.anim-breathe {
+  animation: hj-breathe 8s ease-in-out infinite;
+}
+
+/* Interactions */
+.hover-lift {
+  transition: transform 0.3s var(--hj-ease), box-shadow 0.3s var(--hj-ease);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px -12px rgba(8, 42, 99, 0.25);
+}
+.zoom-on-hover {
+  transition: transform 0.6s var(--hj-ease);
+}
+.group:hover .zoom-on-hover {
+  transform: scale(1.06);
+}
+.btn-press {
+  transition: transform 0.15s var(--hj-ease), background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
+/* Floating WhatsApp button: pop-in, double ripple, ringing icon, one-time tooltip peek. */
+@keyframes hj-pop-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hj-phone-ring {
+  0%, 12%, 100% { transform: rotate(0); }
+  2%, 6%, 10% { transform: rotate(-14deg); }
+  4%, 8% { transform: rotate(14deg); }
+}
+@keyframes hj-tooltip-peek {
+  0% { opacity: 0; transform: translateX(8px); }
+  8%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateX(8px); }
+}
+.wa-float {
+  animation: hj-pop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both;
+}
+.wa-pulse::before,
+.wa-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 9999px;
+  background: #25d366;
+  animation: hj-pulse-ring 3s ease-out infinite;
+}
+.wa-pulse::after {
+  animation-delay: 1.5s;
+}
+.wa-ring {
+  transform-origin: 50% 50%;
+  animation: hj-phone-ring 4s ease-in-out 2s infinite;
+}
+.wa-float:hover .wa-ring {
+  animation-play-state: paused;
+}
+.wa-tooltip {
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.25s var(--hj-ease);
+  animation: hj-tooltip-peek 4.5s var(--hj-ease) 2.5s 1 none;
+}
+.wa-float:hover .wa-tooltip {
+  transform: none;
+}
+
+/* Page transitions (React <ViewTransition default="page-fade"> in app/(site)/layout.tsx). */
+@keyframes hj-vt-out {
+  to { opacity: 0; }
+}
+@keyframes hj-vt-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+::view-transition-old(.page-fade) {
+  animation: hj-vt-out 150ms ease-in both;
+}
+::view-transition-new(.page-fade) {
+  animation: hj-vt-in 250ms var(--hj-ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .anim-fade-up,
+  .anim-ken-burns,
+  .anim-float,
+  .anim-slide-down,
+  .anim-breathe,
+  .hover-lift,
+  .zoom-on-hover,
+  .wa-float,
+  .wa-ring,
+  .wa-tooltip,
+  .wa-pulse::before,
+  .wa-pulse::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html .reveal:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+  }
+  .hover-lift:hover,
+  .group:hover .zoom-on-hover,
+  .btn-press:active {
+    transform: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
