@@ -34,13 +34,15 @@ export default function Footer({ contact, social }: { contact: ContactSettings; 
           
           {/* Column 1: About */}
           <div>
-            <div className="mb-6 bg-white inline-block px-4 py-2 rounded-xl">
-              <Image 
-                src="/logo.png" 
-                alt="Hathaway Journey Logo" 
-                width={160} 
-                height={50} 
-                className="h-12 w-auto object-contain"
+            <div className="mb-6">
+              {/* Version with a white wordmark for the dark footer (public/logo-light.png). */}
+              <Image
+                src="/logo-light.png"
+                alt="Hathaway Journey Logo"
+                width={640}
+                height={416}
+                sizes="160px"
+                className="h-24 w-auto object-contain"
               />
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">

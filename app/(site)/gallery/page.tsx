@@ -9,7 +9,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     'Foto dan video momen perjalanan peserta paket tour luar negeri Hathaway Journey di berbagai destinasi dunia.',
   path: '/gallery',
-  image: getImage('heroGallery'),
+  image: getImage('heroAsiaCollage'),
 });
 
 const VIDEO_TAB = { VIDEO_TOUR: 'VIDEO TOUR', VIDEO_TESTIMONI: 'VIDEO TESTIMONI' } as const;
@@ -23,5 +23,5 @@ export default async function GalleryPage() {
     .filter((i) => i.kind !== 'FOTO')
     .map((i) => ({ id: i.id, type: VIDEO_TAB[i.kind as keyof typeof VIDEO_TAB], title: i.title ?? '', thumb: i.imageUrl, videoUrl: i.videoUrl }));
 
-  return <GalleryClient photos={photos} videos={videos} heroImage={getImage('heroGallery')} />;
+  return <GalleryClient photos={photos} videos={videos} heroImage={getImage('heroAsiaCollage')} />;
 }

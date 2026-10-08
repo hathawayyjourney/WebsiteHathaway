@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     'Jelajahi destinasi tour luar negeri favorit di Asia, Eropa, dan Timur Tengah, lengkap dengan waktu terbaik berkunjung dan pilihan paket tour Hathaway Journey.',
   path: '/destinasi',
-  image: getImage('heroDestinasi'),
+  image: getImage('heroAsiaCollage'),
 });
 
 // Sitemap FSD: Indonesia, Asia, Eropa, Timur Tengah, Destinasi Lain
@@ -36,7 +36,7 @@ export default async function DestinasiPage({ searchParams }: { searchParams: Pr
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <PageHero title="DESTINASI" subtitle="Jelajahi destinasi impian Anda, dari keindahan Indonesia hingga penjuru dunia." image={getImage('heroDestinasi')} />
+      <PageHero title="DESTINASI" subtitle="Jelajahi destinasi impian Anda, dari keindahan Indonesia hingga penjuru dunia." image={getImage('heroAsiaCollage')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <Breadcrumb items={region ? [{ label: 'Destinasi', href: '/destinasi' }, { label: REGION_LABELS[region] }] : [{ label: 'Destinasi' }]} />

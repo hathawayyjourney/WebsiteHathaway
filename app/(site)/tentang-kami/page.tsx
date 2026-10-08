@@ -16,7 +16,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     'Kenali Hathaway Journey: travel agent penyelenggara paket tour luar negeri dengan tour leader berpengalaman, legalitas resmi, dan layanan sepenuh hati.',
   path: '/tentang-kami',
-  image: getImage('heroTentangKami'),
+  image: getImage('heroAsiaCollage'),
 });
 
 /** Photo blended into a colored card (Visi/Misi), like the page hero treatment. */
@@ -37,7 +37,7 @@ export default async function TentangKamiPage() {
         <PageHero
           title="TENTANG KAMI"
           subtitle="Mengenal lebih dekat Hathaway Journey, partner perjalanan terpercaya Anda."
-          image={getImage('heroTentangKami')}
+          image={getImage('heroAsiaCollage')}
         />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">

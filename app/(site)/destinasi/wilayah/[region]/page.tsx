@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       destinations.map((d) => d.name),
     ),
     path: `/destinasi/wilayah/${page.slug}`,
-    image: getImage('heroDestinasi'),
+    image: getImage('heroAsiaCollage'),
     noindex: empty,
   });
 }
@@ -88,7 +88,7 @@ export default async function RegionLandingPage({ params }: Props) {
           page,
           destinations.map((d) => d.name),
         )}
-        image={getImage('heroDestinasi')}
+        image={getImage('heroAsiaCollage')}
       />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">

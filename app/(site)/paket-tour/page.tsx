@@ -26,7 +26,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     description:
       'Pilihan paket tour luar negeri ke Asia, Eropa, dan Timur Tengah. Bandingkan harga, durasi, dan jadwal keberangkatan, lalu booking mudah via WhatsApp.',
     path: paged ? `/paket-tour?page=${page}` : '/paket-tour',
-    image: getImage('heroPaketTour'),
+    image: getImage('heroAsiaCollage'),
     noindex: !!q,
   });
 }
@@ -49,7 +49,7 @@ export default async function PaketTourPage({ searchParams }: Props) {
         <PageHero
           title="PAKET TOUR"
           subtitle="Temukan perjalanan terbaik sesuai kebutuhan Anda. Kami menawarkan berbagai pilihan destinasi menarik dengan harga terbaik."
-          image={getImage('heroPaketTour')}
+          image={getImage('heroAsiaCollage')}
         />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
