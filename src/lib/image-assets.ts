@@ -36,10 +36,15 @@ const hero = (id: string, slug: string, alt: string, opts: { fallback?: string; 
 export const IMAGE_ASSETS = {
   // A. Page heroes
   homeHero: { id: 'H1', file: 'images/home/hero.webp', width: 2560, height: 1440, alt: 'Sayap pesawat di atas awan', kind: 'photo', fallback: unsplash('photo-1436491865332-7a61a109cc05') },
-  heroPaketTour: hero('H2', 'paket-tour', 'Sayap pesawat di atas awan saat matahari terbit', { fallback: unsplash('photo-1436491865332-7a61a109cc05') }),
-  heroDestinasi: hero('H3', 'destinasi', 'Traveler menikmati pemandangan teluk tropis', { position: 'center 35%' }),
-  heroGallery: hero('H4', 'gallery', 'Grup traveler berfoto di landmark', { position: 'center 45%' }),
-  heroTentangKami: hero('H5', 'tentang-kami', 'Tour leader memandu grup wisata', { position: 'center 25%' }),
+  // Shared by Paket Tour, Destinasi (incl. region pages), Gallery and Tentang Kami (client request; replaced H2–H5).
+  heroAsiaCollage: {
+    id: 'H11',
+    file: 'images/heroes/asia-collage.webp',
+    width: 2400,
+    height: 700,
+    alt: 'Landmark Thailand, Malaysia, dan Singapura saat matahari terbenam',
+    kind: 'photo',
+  },
   heroTestimoni: hero('H6', 'testimoni', 'Keluarga bahagia berlibur di pantai', { position: 'center 30%' }),
   heroFaq: hero('H7', 'faq', 'Paspor, boarding pass, dan peta perjalanan'),
   heroKontak: hero('H8', 'kontak', 'Konsultan travel melayani pelanggan', { position: 'center 30%' }),
@@ -47,7 +52,15 @@ export const IMAGE_ASSETS = {
   heroLegal: hero('H10', 'legal', 'Dokumen perjalanan di meja'),
 
   // B. Home body
-  homeCta: { id: 'B1', file: 'images/home/cta.webp', width: 1200, height: 900, alt: 'Pasangan menikmati pemandangan balon udara', kind: 'photo', fallback: unsplash('photo-1541417904950-b855846fe074', 800) },
+  // "Siap berpetualang" CTA (Home, Tentang Kami, destination & region pages). Replaced B1 at the client's request.
+  homeCta: {
+    id: 'B6',
+    file: 'images/home/cta-asia.webp',
+    width: 2400,
+    height: 668,
+    alt: 'Panorama landmark Singapura, Malaysia, dan Thailand saat matahari terbenam',
+    kind: 'photo',
+  },
   homeStatsBg: { id: 'B2', file: 'images/home/stats-bg.webp', width: 1600, height: 700, alt: '', kind: 'photo' },
   regionIndonesia: { id: 'B3-indonesia', file: 'images/regions/indonesia.webp', width: 800, height: 1000, alt: 'Indonesia', kind: 'photo' },
   regionAsia: { id: 'B3-asia', file: 'images/regions/asia.webp', width: 800, height: 1000, alt: 'Asia', kind: 'photo' },

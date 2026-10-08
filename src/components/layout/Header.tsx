@@ -39,12 +39,14 @@ export default function Header({ whatsappHref }: { whatsappHref: string }) {
         {/* Logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
-            <Image 
-              src="/logo.png" 
-              alt="Hathaway Journey Logo" 
-              width={160} 
-              height={50} 
-              className="h-10 w-auto object-contain"
+            {/* Transparent, tightly cropped logo (public/logo-transparent.png, 640×416). */}
+            <Image
+              src="/logo-transparent.png"
+              alt="Hathaway Journey Logo"
+              width={640}
+              height={416}
+              sizes="100px"
+              className="h-14 lg:h-16 w-auto object-contain"
               priority
             />
           </Link>

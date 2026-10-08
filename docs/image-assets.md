@@ -51,6 +51,10 @@ Tampil di belakang judul halaman dengan lapisan navy (opacity ±20%), seperti he
 |---|---|---|---|---|
 | H1 | `H1.png` | 16:9 | `public/images/home/hero.webp` (2560×1440) | Home (hero utama) |
 | H2–H10 | `H2.png` … `H10.png` | 21:9 | `public/images/heroes/*.webp` (2400×1000) | Halaman dalam |
+| H11 | `H11.jpg` | ±24:7 | `public/images/heroes/asia-collage.webp` (maks. 2400×700) | Paket Tour, Destinasi (+ halaman wilayah), Gallery, Tentang Kami |
+
+> **Catatan:** H2–H5 sudah tidak dipakai. Atas permintaan klien, keempat halaman itu memakai satu gambar
+> bersama **H11** (kolase landmark Thailand–Malaysia–Singapura). Prompt H2–H5 di bawah disimpan sebagai arsip.
 
 **H1 — Home** · sisi kiri tertutup gradasi putih dan teks, jadi subjek harus di **kanan**.
 ```
@@ -108,7 +112,8 @@ Photorealistic minimal photograph, neatly stacked documents, a passport and an e
 
 | ID | Nama file mentah | Rasio | Output | Posisi |
 |---|---|---|---|---|
-| B1 | `B1.png` | 4:3 | `home/cta.webp` (1200×900) | Kanan section "Siap Berpetualang" (sisi kiri memudar) |
+| ~~B1~~ | — | — | diganti B6 | — |
+| B6 | `B6.jpg` | ±18:5 | `home/cta-asia.webp` (maks. 2400×668) | Kanan section "Siap Berpetualang" (sisi kiri memudar) — panorama landmark Asia Tenggara dari klien |
 | B2 | `B2.png` | 21:9 | `home/stats-bg.webp` (1600×700) | Latar samar kotak statistik navy |
 | B3 | `B3-indonesia.png`, `B3-asia.png`, `B3-eropa.png`, `B3-timur-tengah.png`, `B3-lainnya.png` | 4:5 | `regions/*.webp` (800×1000) | Kartu "Destinasi Populer" |
 | B4 | `B4-airplane.png`, `B4-suitcase.png`, `B4-passport.png` | 1:1 | `decor/*.webp` (800×800, transparan) | Aksen di samping judul section (desktop saja) |
