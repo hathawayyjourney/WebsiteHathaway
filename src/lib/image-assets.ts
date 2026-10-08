@@ -45,13 +45,13 @@ export const IMAGE_ASSETS = {
     kind: 'photo',
     fallback: unsplash('photo-1436491865332-7a61a109cc05'),
   },
-  // Shared by Paket Tour, Destinasi (incl. region pages), Gallery and Tentang Kami (client request; replaced H2–H5).
+  // Shared by Paket Tour, Destinasi (incl. region pages), Gallery and Tentang Kami (client request; replaced H2–H5, then H11).
   heroAsiaCollage: {
-    id: 'H11',
-    file: 'images/heroes/asia-collage.webp',
+    id: 'H13',
+    file: 'images/heroes/asia-landmarks.webp',
     width: 2400,
-    height: 700,
-    alt: 'Landmark Thailand, Malaysia, dan Singapura saat matahari terbenam',
+    height: 1018,
+    alt: 'Kolase landmark Thailand, Singapura, dan Malaysia dengan pesawat di langit senja',
     kind: 'photo',
   },
   heroTestimoni: hero('H6', 'testimoni', 'Keluarga bahagia berlibur di pantai', { position: 'center 30%' }),
