@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Star } from 'lucide-react';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
+import { getImage } from '@/src/lib/images';
 import { getTestimonials } from '@/src/server/queries/content';
 import { formatDate } from '@/src/lib/format';
 
@@ -17,7 +18,7 @@ export default async function TestimoniPage() {
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <PageHero title="TESTIMONI" subtitle="Cerita dan pengalaman pelanggan yang telah berlibur bersama Hathaway Journey." />
+      <PageHero title="TESTIMONI" subtitle="Cerita dan pengalaman pelanggan yang telah berlibur bersama Hathaway Journey." image={getImage('heroTestimoni')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <Breadcrumb items={[{ label: 'Testimoni' }]} />

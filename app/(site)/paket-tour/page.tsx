@@ -1,10 +1,13 @@
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
+import PageHero from '@/src/components/ui/PageHero';
+import { getImage } from '@/src/lib/images';
 import FilterPanel from '@/src/components/package/FilterPanel';
 import PackageCard from '@/src/components/package/PackageCard';
 import Pagination from '@/src/components/ui/Pagination';
 import SortSelect from '@/src/components/package/SortSelect';
 import { SlidersHorizontal } from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { getPackageFilterOptions, searchPackages } from '@/src/server/queries/packages';
 import { PAGE_SIZE, parsePackageSearchParams } from '@/src/lib/package-filters';
 
@@ -22,24 +25,17 @@ export default async function PaketTourPage({ searchParams }: { searchParams: Pr
   ]);
   const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
   const to = Math.min(page * PAGE_SIZE, total);
+  const emptyImage = getImage('emptySearch');
 
   return (
     <>
       <main className="min-h-screen pt-20 pb-20 bg-brand-light">
         
-        {/* Page Hero Area */}
-        <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
-          <div 
-            className="absolute inset-0 z-0 opacity-20 mix-blend-overlay bg-cover bg-center"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop')" }}
-          ></div>
-          <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
-            <h1 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight">PAKET TOUR</h1>
-            <p className="text-white/80 max-w-xl mx-auto">
-              Temukan perjalanan terbaik sesuai kebutuhan Anda. Kami menawarkan berbagai pilihan destinasi menarik dengan harga terbaik.
-            </p>
-          </div>
-        </div>
+        <PageHero
+          title="PAKET TOUR"
+          subtitle="Temukan perjalanan terbaik sesuai kebutuhan Anda. Kami menawarkan berbagai pilihan destinasi menarik dengan harga terbaik."
+          image={getImage('heroPaketTour')}
+        />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
           <Breadcrumb items={[{ label: 'Paket Tour' }]} />
@@ -80,6 +76,9 @@ export default async function PaketTourPage({ searchParams }: { searchParams: Pr
                 </div>
               ) : (
                 <div className="bg-white rounded-[20px] border border-gray-100 shadow-sm p-10 text-center">
+                  {emptyImage && (
+                    <Image src={emptyImage.src} alt={emptyImage.alt} width={160} height={160} className="mx-auto mb-6 rounded-2xl" />
+                  )}
                   <p className="font-bold text-brand-navy mb-2">Paket tidak ditemukan</p>
                   <p className="text-sm text-brand-muted">Coba ubah atau reset filter pencarian Anda.</p>
                 </div>

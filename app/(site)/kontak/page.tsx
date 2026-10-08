@@ -1,7 +1,10 @@
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
+import PageHero from '@/src/components/ui/PageHero';
+import { getImage } from '@/src/lib/images';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import ContactForm from '@/src/components/contact/ContactForm';
+import CardImage from '@/src/components/ui/CardImage';
 import { getSetting } from '@/src/server/queries/settings';
 
 export const metadata: Metadata = {
@@ -15,14 +18,11 @@ export default async function KontakPage() {
   return (
     <>
       <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-        <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
-          <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
-            <h1 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight">KONTAK KAMI</h1>
-            <p className="text-white/80 max-w-xl mx-auto">
-              Hubungi tim Hathaway Journey untuk konsultasi perjalanan Anda.
-            </p>
-          </div>
-        </div>
+        <PageHero
+          title="KONTAK KAMI"
+          subtitle="Hubungi tim Hathaway Journey untuk konsultasi perjalanan Anda."
+          image={getImage('heroKontak')}
+        />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
           <Breadcrumb items={[{ label: 'Kontak' }]} />
@@ -31,6 +31,7 @@ export default async function KontakPage() {
             {/* Contact Info */}
             <div className="w-full lg:w-1/3">
               <div className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 h-full">
+                <CardImage image={getImage('contactOffice')} className="h-44" />
                 <h2 className="text-xl font-bold text-brand-navy mb-8">Informasi Kontak</h2>
                 
                 <div className="space-y-6">

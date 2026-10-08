@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import GalleryClient from '@/src/components/gallery/GalleryClient';
 import { getGallery } from '@/src/server/queries/content';
+import { getImage } from '@/src/lib/images';
 
 export const metadata: Metadata = {
   title: 'Gallery',
@@ -18,5 +19,5 @@ export default async function GalleryPage() {
     .filter((i) => i.kind !== 'FOTO')
     .map((i) => ({ id: i.id, type: VIDEO_TAB[i.kind as keyof typeof VIDEO_TAB], title: i.title ?? '', thumb: i.imageUrl, videoUrl: i.videoUrl }));
 
-  return <GalleryClient photos={photos} videos={videos} />;
+  return <GalleryClient photos={photos} videos={videos} heroImage={getImage('heroGallery')} />;
 }

@@ -1,12 +1,19 @@
 import DestinationCard from '../destination/DestinationCard';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import type { HomeRegion } from '@/src/lib/settings-defaults';
+import { SETTINGS_DEFAULTS, type HomeRegion } from '@/src/lib/settings-defaults';
+import Decor from '../ui/Decor';
+import { getImage, pickImage } from '@/src/lib/images';
+import { REGION_IMAGE_KEYS } from '@/src/lib/image-assets';
+
+// Default photo per region, used to tell whether an admin has replaced it.
+const DEFAULT_IMAGES = new Map(SETTINGS_DEFAULTS.home_regions.map((r) => [r.region, r.image]));
 
 export default function PopularDestinations({ regions }: { regions: HomeRegion[] }) {
   return (
-    <section className="py-8 container mx-auto px-4 lg:px-8 max-w-[1250px]">
-      
+    <section className="relative py-8 container mx-auto px-4 lg:px-8 max-w-[1250px]">
+      <Decor image={getImage('decorPassport')} className="-top-12 right-0 xl:right-10 w-32 rotate-12" />
+
       {/* Section Title */}
       <div className="text-center mb-10">
         <h2 className="text-2xl lg:text-3xl font-black text-brand-navy tracking-tight">DESTINASI POPULER</h2>
@@ -20,7 +27,14 @@ export default function PopularDestinations({ regions }: { regions: HomeRegion[]
         {regions.map(item => (
           <DestinationCard
             key={item.region}
-            data={{ id: item.region, name: item.label, image: item.image, href: `/destinasi?region=${item.region.toLowerCase()}` }}
+            data={{
+              id: item.region,
+              name: item.label,
+              image: REGION_IMAGE_KEYS[item.region]
+                ? pickImage(REGION_IMAGE_KEYS[item.region], item.image, DEFAULT_IMAGES.get(item.region) ?? item.image)
+                : item.image,
+              href: `/destinasi?region=${item.region.toLowerCase()}`,
+            }}
           />
         ))}
       </div>

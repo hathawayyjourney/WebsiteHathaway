@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
+import { getImage } from '@/src/lib/images';
 import DestinationCard from '@/src/components/destination/DestinationCard';
 import { REGIONS, type Region } from '@/src/db/enums';
 import { listDestinations, REGION_LABELS } from '@/src/server/queries/destinations';
@@ -30,7 +31,7 @@ export default async function DestinasiPage({ searchParams }: { searchParams: Pr
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <PageHero title="DESTINASI" subtitle="Jelajahi destinasi impian Anda, dari keindahan Indonesia hingga penjuru dunia." />
+      <PageHero title="DESTINASI" subtitle="Jelajahi destinasi impian Anda, dari keindahan Indonesia hingga penjuru dunia." image={getImage('heroDestinasi')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <Breadcrumb items={region ? [{ label: 'Destinasi', href: '/destinasi' }, { label: REGION_LABELS[region] }] : [{ label: 'Destinasi' }]} />
