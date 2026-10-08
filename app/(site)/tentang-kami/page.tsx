@@ -1,4 +1,7 @@
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
+import PageHero from '@/src/components/ui/PageHero';
+import { getImage, pickImage } from '@/src/lib/images';
+import { SETTINGS_DEFAULTS } from '@/src/lib/settings-defaults';
 import FinalCTA from '@/src/components/home/FinalCTA';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -11,6 +14,12 @@ export const metadata: Metadata = {
   description: 'Mengenal lebih dekat Hathaway Journey, partner perjalanan terpercaya Anda.',
 };
 
+/** Photo blended into a colored card (Visi/Misi), like the page hero treatment. */
+function CardTexture({ image }: { image: ReturnType<typeof getImage> }) {
+  if (!image) return null;
+  return <Image src={image.src} alt="" fill sizes="400px" className="object-cover opacity-15 mix-blend-overlay pointer-events-none" />;
+}
+
 export default async function TentangKamiPage() {
   const [{ company, contact, wa_templates }, { legal, team, partners }] = await Promise.all([
     getSettings('company', 'contact', 'wa_templates'),
@@ -20,15 +29,11 @@ export default async function TentangKamiPage() {
   return (
     <>
       <main className="min-h-screen pt-20 pb-0 bg-brand-light">
-        {/* Page Hero Area */}
-        <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
-          <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
-            <h1 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight">TENTANG KAMI</h1>
-            <p className="text-white/80 max-w-xl mx-auto">
-              Mengenal lebih dekat Hathaway Journey, partner perjalanan terpercaya Anda.
-            </p>
-          </div>
-        </div>
+        <PageHero
+          title="TENTANG KAMI"
+          subtitle="Mengenal lebih dekat Hathaway Journey, partner perjalanan terpercaya Anda."
+          image={getImage('heroTentangKami')}
+        />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
           <Breadcrumb items={[{ label: 'Tentang Kami' }]} />
@@ -47,21 +52,29 @@ export default async function TentangKamiPage() {
               </p>
             </div>
             <div className="w-full md:w-1/2 relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
-              <Image src={company.image} alt="Tim Hathaway Journey" fill className="object-cover" />
+              <Image
+                src={pickImage('aboutCompany', company.image, SETTINGS_DEFAULTS.company.image)}
+                alt="Tim Hathaway Journey"
+                fill
+                sizes="(min-width: 768px) 600px, 100vw"
+                className="object-cover"
+              />
             </div>
           </div>
 
           {/* Section: Visi, Misi, Nilai */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-            <div className="bg-brand-navy text-white p-8 rounded-[20px] shadow-lg">
-              <h3 className="text-xl font-bold mb-4">Visi</h3>
-              <p className="text-white/80 leading-relaxed">
+            <div className="relative overflow-hidden bg-brand-navy text-white p-8 rounded-[20px] shadow-lg">
+              <CardTexture image={getImage('aboutVision')} />
+              <h3 className="relative text-xl font-bold mb-4">Visi</h3>
+              <p className="relative text-white/80 leading-relaxed">
                 {company.vision}
               </p>
             </div>
-            <div className="bg-brand-red text-white p-8 rounded-[20px] shadow-lg">
-              <h3 className="text-xl font-bold mb-4">Misi</h3>
-              <ul className="list-disc list-outside ml-4 text-white/90 space-y-2">
+            <div className="relative overflow-hidden bg-brand-red text-white p-8 rounded-[20px] shadow-lg">
+              <CardTexture image={getImage('aboutMission')} />
+              <h3 className="relative text-xl font-bold mb-4">Misi</h3>
+              <ul className="relative list-disc list-outside ml-4 text-white/90 space-y-2">
                 {company.missions.map((mission) => (
                   <li key={mission}>{mission}</li>
                 ))}

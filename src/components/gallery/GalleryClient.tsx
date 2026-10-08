@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Play } from 'lucide-react';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
+import PageHero from '@/src/components/ui/PageHero';
+import type { SiteImage } from '@/src/lib/image-assets';
 import { PHOTO_CATEGORIES as DB_PHOTO_CATEGORIES } from '@/src/db/enums';
 
 const TABS = ['FOTO', 'VIDEO TOUR', 'VIDEO TESTIMONI'];
@@ -17,7 +19,15 @@ function youtubeEmbed(url: string): string | null {
   return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : null;
 }
 
-export default function GalleryClient({ photos: PHOTOS, videos: VIDEOS }: { photos: GalleryPhoto[]; videos: GalleryVideo[] }) {
+export default function GalleryClient({
+  photos: PHOTOS,
+  videos: VIDEOS,
+  heroImage,
+}: {
+  photos: GalleryPhoto[];
+  videos: GalleryVideo[];
+  heroImage?: SiteImage | null;
+}) {
   const [activeTab, setActiveTab] = useState('FOTO');
   const [activeCategory, setActiveCategory] = useState('Semua');
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
@@ -33,15 +43,11 @@ export default function GalleryClient({ photos: PHOTOS, videos: VIDEOS }: { phot
     <>
       
       <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-        {/* Page Hero Area */}
-        <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
-          <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
-            <h1 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight">GALLERY</h1>
-            <p className="text-white/80 max-w-xl mx-auto">
-              Kumpulan momen indah perjalanan dan testimoni dari pelanggan Hathaway Journey.
-            </p>
-          </div>
-        </div>
+        <PageHero
+          title="GALLERY"
+          subtitle="Kumpulan momen indah perjalanan dan testimoni dari pelanggan Hathaway Journey."
+          image={heroImage}
+        />
 
         <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
           <Breadcrumb items={[{ label: 'Gallery' }]} />

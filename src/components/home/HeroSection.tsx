@@ -1,16 +1,16 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Plane, Phone } from 'lucide-react';
+import { getImage } from '@/src/lib/images';
 
 export default function HeroSection({ whatsappHref }: { whatsappHref: string }) {
+  const background = getImage('homeHero');
+
   return (
     <section className="relative pt-20 lg:pt-28 pb-32 lg:pb-48 flex items-center min-h-[600px] bg-brand-light">
-      {/* Background Image Setup - Using an absolute div with next/image or background image */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop')",
-        }}
-      >
+      {/* Background image (public/images/home/hero.webp, falls back to the original photo) */}
+      <div className="absolute inset-0 z-0">
+        {background && <Image src={background.src} alt="" fill priority sizes="100vw" className="object-cover object-center" />}
         <div className="absolute inset-0 bg-white/70 lg:bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
       </div>
 

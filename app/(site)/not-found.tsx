@@ -1,9 +1,14 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { getImage } from '@/src/lib/images';
 
 export default function NotFound() {
+  const image = getImage('notFound');
+
   return (
     <main className="min-h-screen pt-20 bg-brand-light flex items-center justify-center px-4">
       <div className="text-center py-24">
+        {image && <Image src={image.src} alt={image.alt} width={360} height={270} priority className="mx-auto mb-8 rounded-[20px]" />}
         <p className="text-brand-red font-bold tracking-widest text-sm mb-4">404</p>
         <h1 className="text-3xl lg:text-4xl font-black text-brand-navy mb-4">HALAMAN TIDAK DITEMUKAN</h1>
         <p className="text-brand-muted mb-8 max-w-md mx-auto">Halaman yang Anda cari tidak tersedia atau sudah dipindahkan.</p>

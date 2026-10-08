@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
+import { getImage } from '@/src/lib/images';
 import BookingForm from '@/src/components/booking/BookingForm';
+import CardImage from '@/src/components/ui/CardImage';
 import { getBookingOptions } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
 
@@ -25,7 +27,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <PageHero title="BOOKING" subtitle="Pilih paket impian Anda, lalu lanjutkan pemesanan langsung dengan admin kami via WhatsApp." />
+      <PageHero title="BOOKING" subtitle="Pilih paket impian Anda, lalu lanjutkan pemesanan langsung dengan admin kami via WhatsApp." image={getImage('heroBooking')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <Breadcrumb items={[{ label: 'Booking' }]} />
@@ -46,6 +48,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
 
           <div className="w-full lg:w-1/3">
             <div className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 h-full">
+              <CardImage image={getImage('bookingHelp')} />
               <h2 className="text-xl font-bold text-brand-navy mb-8">Cara Booking</h2>
               <ol className="space-y-6">
                 {STEPS.map((step, i) => (
