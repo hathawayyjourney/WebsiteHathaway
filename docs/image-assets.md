@@ -52,10 +52,11 @@ Tampil di belakang judul halaman dengan lapisan navy (opacity ±20%), seperti he
 | ~~H1~~ | — | — | diganti H12 | — |
 | H12 | `H12.jpg` | ±2:1 | `public/images/home/hero-asia.webp` (maks. 2560×1252) | Home (hero utama) — kolase landmark Asia Tenggara dari klien |
 | H2–H10 | `H2.png` … `H10.png` | 21:9 | `public/images/heroes/*.webp` (2400×1000) | Halaman dalam |
-| H11 | `H11.jpg` | ±24:7 | `public/images/heroes/asia-collage.webp` (maks. 2400×700) | Paket Tour, Destinasi (+ halaman wilayah), Gallery, Tentang Kami |
+| ~~H11~~ | — | — | diganti H13 | — |
+| H13 | `H13.jpg` | ±12:5 | `public/images/heroes/asia-landmarks.webp` (maks. 2400×1018) | Paket Tour, Destinasi (+ halaman wilayah), Gallery, Tentang Kami |
 
 > **Catatan:** H2–H5 sudah tidak dipakai. Atas permintaan klien, keempat halaman itu memakai satu gambar
-> bersama **H11** (kolase landmark Thailand–Malaysia–Singapura). Prompt H2–H5 di bawah disimpan sebagai arsip.
+> bersama **H13** (kolase landmark Thailand–Singapura–Malaysia; sebelumnya H11). Prompt H2–H5 di bawah disimpan sebagai arsip.
 
 **H1 — Home** · sisi kiri tertutup gradasi putih dan teks, jadi subjek harus di **kanan**.
 ```
