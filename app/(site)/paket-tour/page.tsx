@@ -10,6 +10,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getPackageFilterOptions, searchPackages } from '@/src/server/queries/packages';
 import { PAGE_SIZE, parsePackageSearchParams } from '@/src/lib/package-filters';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Paket Tour',
@@ -70,8 +71,10 @@ export default async function PaketTourPage({ searchParams }: { searchParams: Pr
               {/* Package Grid */}
               {packages.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {packages.map(pkg => (
-                    <PackageCard key={pkg.id} data={pkg} />
+                  {packages.map((pkg, i) => (
+                    <Reveal key={pkg.id} delay={(i % 3) * 80} className="h-full">
+                      <PackageCard data={pkg} />
+                    </Reveal>
                   ))}
                 </div>
               ) : (

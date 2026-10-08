@@ -1,3 +1,4 @@
+import { ViewTransition } from 'react';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
 import WhatsAppFloating from '@/src/components/ui/WhatsAppFloating';
@@ -11,7 +12,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <Header whatsappHref={whatsappHref} />
-      {children}
+      {/* Page content cross-fades on navigation (see ::view-transition-*(.page-fade) in globals.css). */}
+      <ViewTransition default="page-fade">{children}</ViewTransition>
       <Footer contact={contact} social={social} />
       <WhatsAppFloating href={whatsappHref} />
     </>

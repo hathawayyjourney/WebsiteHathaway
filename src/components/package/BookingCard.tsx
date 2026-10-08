@@ -133,7 +133,7 @@ export default function BookingCard({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => track('click_booking_wa', { package: packageName, date, pax })}
-            className="block w-full bg-brand-navy hover:bg-brand-navy-sec text-white text-center py-3.5 rounded-full font-semibold transition shadow-md"
+            className="block w-full bg-brand-navy hover:bg-brand-navy-sec text-white text-center py-3.5 rounded-full font-semibold transition btn-press shadow-md"
           >
             BOOKING SEKARANG
           </a>
@@ -147,7 +147,7 @@ export default function BookingCard({
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track('click_whatsapp', { package: packageName })}
-          className="flex items-center justify-center gap-2 w-full bg-brand-wa hover:bg-green-600 text-white py-3.5 rounded-full font-semibold transition shadow-md"
+          className="flex items-center justify-center gap-2 w-full bg-brand-wa hover:bg-green-600 text-white py-3.5 rounded-full font-semibold transition btn-press shadow-md"
         >
           <Phone size={18} fill="currentColor" /> WHATSAPP ADMIN
         </a>

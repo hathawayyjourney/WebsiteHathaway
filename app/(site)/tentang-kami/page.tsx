@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import { getSettings } from '@/src/server/queries/settings';
 import { getCompanyExtras } from '@/src/server/queries/content';
 import { waLink } from '@/src/lib/whatsapp';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Tentang Kami',
@@ -39,7 +40,7 @@ export default async function TentangKamiPage() {
           <Breadcrumb items={[{ label: 'Tentang Kami' }]} />
 
           {/* Section: Tentang & Sejarah */}
-          <div className="flex flex-col md:flex-row gap-12 items-center mb-20 bg-white p-8 lg:p-12 rounded-[20px] shadow-sm">
+          <Reveal className="flex flex-col md:flex-row gap-12 items-center mb-20 bg-white p-8 lg:p-12 rounded-[20px] shadow-sm">
             <div className="w-full md:w-1/2">
               <h2 className="text-2xl lg:text-3xl font-black text-brand-navy mb-6">TENTANG HATHAWAY JOURNEY</h2>
               <div className="w-12 h-1 bg-brand-red mb-6"></div>
@@ -60,10 +61,10 @@ export default async function TentangKamiPage() {
                 className="object-cover"
               />
             </div>
-          </div>
+          </Reveal>
 
           {/* Section: Visi, Misi, Nilai */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             <div className="relative overflow-hidden bg-brand-navy text-white p-8 rounded-[20px] shadow-lg">
               <CardTexture image={getImage('aboutVision')} />
               <h3 className="relative text-xl font-bold mb-4">Visi</h3>
@@ -88,10 +89,10 @@ export default async function TentangKamiPage() {
                 ))}
               </ul>
             </div>
-          </div>
+          </Reveal>
 
           {/* Section: Legalitas & Sertifikasi */}
-          <div className="text-center mb-20">
+          <Reveal className="text-center mb-20">
             <h2 className="text-2xl font-black text-brand-navy mb-12">LEGALITAS & SERTIFIKASI</h2>
             <div className="flex flex-wrap justify-center gap-8 opacity-70">
               {legal.map((doc) =>
@@ -108,11 +109,11 @@ export default async function TentangKamiPage() {
                 ),
               )}
             </div>
-          </div>
+          </Reveal>
 
           {/* Section: Team (shown once admin adds members) */}
           {team.length > 0 && (
-            <div className="text-center mb-20">
+            <Reveal className="text-center mb-20">
               <h2 className="text-2xl font-black text-brand-navy mb-12">TIM KAMI</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {team.map((member) => (
@@ -128,12 +129,12 @@ export default async function TentangKamiPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Reveal>
           )}
 
           {/* Section: Partnership (shown once admin adds partners) */}
           {partners.length > 0 && (
-            <div className="text-center mb-20">
+            <Reveal className="text-center mb-20">
               <h2 className="text-2xl font-black text-brand-navy mb-12">PARTNER KAMI</h2>
               <div className="flex flex-wrap justify-center gap-8">
                 {partners.map((partner) => (
@@ -142,7 +143,7 @@ export default async function TentangKamiPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </Reveal>
           )}
         </div>
 

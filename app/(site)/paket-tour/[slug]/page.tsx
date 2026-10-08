@@ -10,6 +10,7 @@ import TrackView from '@/src/components/analytics/TrackView';
 import { getPackageBySlug } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
 import { singleLine } from '@/src/lib/format';
+import Reveal from '@/src/components/ui/Reveal';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -30,10 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="bg-white rounded-[20px] shadow-sm border border-gray-100 p-6 lg:p-8">
+    <Reveal><section className="bg-white rounded-[20px] shadow-sm border border-gray-100 p-6 lg:p-8">
       <h2 className="text-xl font-bold text-brand-navy mb-6">{title}</h2>
       {children}
-    </section>
+    </section></Reveal>
   );
 }
 

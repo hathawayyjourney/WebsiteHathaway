@@ -6,6 +6,7 @@ import BookingForm from '@/src/components/booking/BookingForm';
 import CardImage from '@/src/components/ui/CardImage';
 import { getBookingOptions } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
+import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Booking',
@@ -33,7 +34,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
         <Breadcrumb items={[{ label: 'Booking' }]} />
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-          <div className="w-full lg:w-2/3">
+          <Reveal className="w-full lg:w-2/3">
             <div className="bg-white p-8 lg:p-10 rounded-[20px] shadow-sm border border-gray-100">
               <h2 className="text-xl font-bold text-brand-navy mb-8">Form Booking</h2>
               <BookingForm
@@ -44,9 +45,9 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
                 siteUrl={process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}
               />
             </div>
-          </div>
+          </Reveal>
 
-          <div className="w-full lg:w-1/3">
+          <Reveal delay={100} className="w-full lg:w-1/3">
             <div className="bg-white p-8 rounded-[20px] shadow-sm border border-gray-100 h-full">
               <CardImage image={getImage('bookingHelp')} />
               <h2 className="text-xl font-bold text-brand-navy mb-8">Cara Booking</h2>
@@ -62,7 +63,7 @@ export default async function BookingPage({ searchParams }: { searchParams: Prom
                 ))}
               </ol>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </main>

@@ -45,7 +45,7 @@ export default function SearchPackage({ destinations, categories }: { destinatio
 
   return (
     <div className="relative z-20 container mx-auto px-4 lg:px-8 max-w-[1250px] -mt-16 lg:-mt-24">
-      <form onSubmit={handleSubmit} className="bg-white rounded-[20px] shadow-xl p-4 lg:p-6 flex flex-col lg:flex-row items-center gap-4 border border-gray-100">
+      <form onSubmit={handleSubmit} style={{ '--anim-delay': '450ms' } as React.CSSProperties} className="anim-fade-up bg-white rounded-[20px] shadow-xl p-4 lg:p-6 flex flex-col lg:flex-row items-center gap-4 border border-gray-100">
 
         {/* Destinasi */}
         <div className="relative flex-1 w-full lg:w-auto flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition border-b lg:border-b-0 lg:border-r border-gray-100">
@@ -112,7 +112,7 @@ export default function SearchPackage({ destinations, categories }: { destinatio
 
         {/* Search Button */}
         <div className="w-full lg:w-auto pl-0 lg:pl-4">
-          <button type="submit" className="w-full lg:w-auto bg-brand-navy hover:bg-brand-navy-sec text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition shadow-md">
+          <button type="submit" className="w-full lg:w-auto bg-brand-navy hover:bg-brand-navy-sec text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition btn-press shadow-md">
             <Search size={18} />
             Cari Paket
           </button>

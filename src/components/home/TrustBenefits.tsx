@@ -1,5 +1,6 @@
 import { ShieldCheck, ThumbsUp, Headphones, Award, Users, CreditCard } from 'lucide-react';
 import type { HomeBenefit } from '@/src/lib/settings-defaults';
+import Reveal from '@/src/components/ui/Reveal';
 
 const ICONS = [ShieldCheck, ThumbsUp, Headphones, Award, Users, CreditCard];
 
@@ -8,6 +9,7 @@ export default function TrustBenefits({ items }: { items: HomeBenefit[] }) {
 
   return (
     <section className="py-12 bg-transparent container mx-auto px-4 lg:px-8 max-w-[1250px]">
+      <Reveal>
       <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-sm border border-gray-100 flex flex-wrap justify-between gap-6">
         {benefits.map((item, idx) => (
           <div key={idx} className="flex items-center gap-4 flex-1 min-w-[200px]">
@@ -21,6 +23,7 @@ export default function TrustBenefits({ items }: { items: HomeBenefit[] }) {
           </div>
         ))}
       </div>
+      </Reveal>
     </section>
   );
 }

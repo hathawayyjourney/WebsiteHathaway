@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, Menu, Phone, X } from 'lucide-react';
 import Image from 'next/image';
 
@@ -18,10 +18,22 @@ const NAV_ITEMS = [
 export default function Header({ whatsappHref }: { whatsappHref: string }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Stronger shadow once the page is scrolled.
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 8);
+    const frame = requestAnimationFrame(update);
+    window.addEventListener('scroll', update, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', update);
+    };
+  }, []);
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
       <div className="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between max-w-[1250px]">
         
         {/* Logo */}
@@ -86,7 +98,7 @@ export default function Header({ whatsappHref }: { whatsappHref: string }) {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="lg:hidden border-t border-gray-100 bg-white px-4 pb-4">
+        <nav className="anim-slide-down lg:hidden border-t border-gray-100 bg-white px-4 pb-4">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.name}

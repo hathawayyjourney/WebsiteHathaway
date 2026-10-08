@@ -30,18 +30,18 @@ export default function PageHero({
       {image &&
         (image.startsWith('/') ? (
           // Local assets (public/images) are optimized by next/image.
-          <Image src={image} alt="" fill priority sizes="100vw" className="absolute inset-0 z-0 object-cover" style={{ objectPosition: position }} />
+          <Image src={image} alt="" fill priority sizes="100vw" className="absolute inset-0 z-0 object-cover anim-ken-burns" style={{ objectPosition: position }} />
         ) : (
           // Admin-provided URLs may be on any host, so keep them as a CSS background.
-          <div className="absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: `url('${image}')`, backgroundPosition: position }}></div>
+          <div className="absolute inset-0 z-0 bg-cover bg-center anim-ken-burns" style={{ backgroundImage: `url('${image}')`, backgroundPosition: position }}></div>
         ))}
       {image && <div className="absolute inset-0 z-0" style={{ backgroundImage: HERO_OVERLAY }}></div>}
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px] relative z-10 text-center">
-        <h1 className="text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight whitespace-pre-line" style={{ textShadow: TEXT_SHADOW }}>
+        <h1 className="anim-fade-up text-3xl lg:text-4xl font-black text-white mb-4 tracking-tight whitespace-pre-line" style={{ textShadow: TEXT_SHADOW }}>
           {title}
         </h1>
         {subtitle && (
-          <p className="text-white max-w-xl mx-auto" style={{ opacity: 0.85, textShadow: TEXT_SHADOW }}>
+          <p className="anim-fade-up max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.85)', textShadow: TEXT_SHADOW, '--anim-delay': '120ms' } as React.CSSProperties}>
             {subtitle}
           </p>
         )}
