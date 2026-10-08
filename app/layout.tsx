@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/src/components/analytics/GoogleAnalytics";
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, DEFAULT_TITLE, SITE_NAME, SITE_URL } from "@/src/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,12 +15,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Hathaway Journey - Explore More, Create Memories",
-    template: "%s | Hathaway Journey",
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "Temukan pengalaman perjalanan terbaik bersama Hathaway Journey. Kami hadir untuk mewujudkan perjalanan impian Anda.",
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: ["paket tour luar negeri", "tour luar negeri", "paket wisata", "travel agent", "Hathaway Journey"],
+  openGraph: { type: "website", locale: "id_ID", siteName: SITE_NAME, title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, images: [DEFAULT_OG_IMAGE] },
+  twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, images: [DEFAULT_OG_IMAGE.url] },
+  // Indexing is the default; only allow large image previews. (Not-found pages get Next's own "noindex".)
+  robots: { googleBot: { "max-image-preview": "large", "max-snippet": -1 } },
+  // Google Search Console "HTML tag" verification (optional).
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } : undefined,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#082A63",
 };
 
 export default function RootLayout({

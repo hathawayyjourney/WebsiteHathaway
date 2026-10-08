@@ -5,15 +5,19 @@ import { SETTINGS_DEFAULTS } from '@/src/lib/settings-defaults';
 import FinalCTA from '@/src/components/home/FinalCTA';
 import Image from 'next/image';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import { getSettings } from '@/src/server/queries/settings';
 import { getCompanyExtras } from '@/src/server/queries/content';
 import { waLink } from '@/src/lib/whatsapp';
 import Reveal from '@/src/components/ui/Reveal';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Tentang Kami',
-  description: 'Mengenal lebih dekat Hathaway Journey, partner perjalanan terpercaya Anda.',
-};
+  description:
+    'Kenali Hathaway Journey: travel agent penyelenggara paket tour luar negeri dengan tour leader berpengalaman, legalitas resmi, dan layanan sepenuh hati.',
+  path: '/tentang-kami',
+  image: getImage('heroTentangKami'),
+});
 
 /** Photo blended into a colored card (Visi/Misi), like the page hero treatment. */
 function CardTexture({ image }: { image: ReturnType<typeof getImage> }) {
@@ -119,7 +123,7 @@ export default async function TentangKamiPage() {
                 {team.map((member) => (
                   <div key={member.id} className="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-hidden">
                     <div className="relative h-56 bg-gray-200">
-                      {member.photo && <Image src={member.photo} alt={member.name} fill className="object-cover" />}
+                      {member.photo && <Image src={member.photo} alt={member.name} fill sizes="(min-width: 768px) 25vw, 50vw" className="object-cover" />}
                     </div>
                     <div className="p-5">
                       <h3 className="font-bold text-brand-navy">{member.name}</h3>
@@ -139,7 +143,7 @@ export default async function TentangKamiPage() {
               <div className="flex flex-wrap justify-center gap-8">
                 {partners.map((partner) => (
                   <div key={partner.id} className="relative bg-white rounded-xl border border-gray-200 shadow-sm w-48 h-24">
-                    <Image src={partner.logo} alt={partner.name} fill className="object-contain p-4" />
+                    <Image src={partner.logo} alt={partner.name} fill sizes="200px" className="object-contain p-4" />
                   </div>
                 ))}
               </div>

@@ -315,6 +315,7 @@ di sidebar dashboard website. Bisa juga **Import .env**: buat file teks berisi d
 | `CLOUDINARY_API_SECRET` | ⭕ | `abcDEF...` | Dari Langkah 1. **Rahasia.** |
 | `CLOUDINARY_FOLDER` | ⭕ | `hathaway` | Nama folder penyimpanan di Cloudinary. |
 | `NEXT_PUBLIC_GA_ID` | ⭕ | `G-AB12CD34EF` | Kosongkan jika tidak memakai Google Analytics. |
+| `NEXT_PUBLIC_GSC_VERIFICATION` | ⭕ | `abc123XYZ...` | Kode verifikasi Google Search Console metode **HTML tag** (hanya isi `content="..."`). Tidak perlu bila verifikasi lewat DNS. |
 
 ✅ = wajib · ⭕ = opsional (fitur terkait nonaktif bila kosong). `SEED_ADMIN_*` **tidak** perlu diisi di Hostinger.
 
@@ -335,6 +336,7 @@ CLOUDINARY_API_KEY=xxxx
 CLOUDINARY_API_SECRET=xxxx
 CLOUDINARY_FOLDER=hathaway
 NEXT_PUBLIC_GA_ID=
+NEXT_PUBLIC_GSC_VERIFICATION=
 ```
 
 > 🔒 Jangan pernah commit file berisi nilai asli ke GitHub. File `.env` sudah di-ignore oleh Git; yang ada di repo
@@ -384,8 +386,27 @@ Lakukan berurutan:
 
 **SEO (disarankan):**
 
-- [ ] **Google Search Console** (<https://search.google.com/search-console>) → tambah domain → verifikasi via DNS
-      (hPanel → Domains → DNS / Nameservers → tambahkan record TXT) → **Sitemaps** → submit `sitemap.xml`.
+Website sudah otomatis menghasilkan title & meta description, canonical URL, Open Graph (preview saat link dibagikan
+di WhatsApp/Facebook), `sitemap.xml`, `robots.txt`, dan *structured data* (TravelAgency, paket tour, breadcrumb,
+FAQ, testimoni). Yang perlu Anda lakukan:
+
+- [ ] Pastikan `NEXT_PUBLIC_SITE_URL` sudah berisi **domain final** (`https://…`, tanpa `/` di akhir). Semua link
+      SEO memakai nilai ini.
+- [ ] **Google Search Console** (<https://search.google.com/search-console>) → tambah properti → verifikasi:
+  - via **DNS** (hPanel → Domains → DNS / Nameservers → tambahkan record TXT), **atau**
+  - via **HTML tag**: salin nilai `content="..."` ke env `NEXT_PUBLIC_GSC_VERIFICATION` lalu simpan (redeploy).
+- [ ] Search Console → **Sitemaps** → submit `sitemap.xml`.
+- [ ] Uji satu halaman paket di **Rich Results Test** (<https://search.google.com/test/rich-results>) → harus
+      terbaca *Product* dan *Breadcrumbs* tanpa error.
+- [ ] Di admin, isi kolom **SEO Title** & **Meta Description** tiap paket/destinasi (opsional, tapi membantu).
+      Jika kosong, website memakai nama + ringkasan paket.
+- [ ] Hubungkan testimoni ke paketnya (field *Paket*) → rating bintang paket muncul di hasil Google.
+- [ ] Isi link media sosial di admin → ikut tercantum sebagai profil resmi bisnis.
+- [ ] Halaman wilayah (`/destinasi/wilayah/asia`, `/eropa`, `/timur-tengah`, `/indonesia`, `/afrika`, `/amerika`)
+      dibuat otomatis dari data destinasi & paket. Wilayah yang belum punya destinasi tetap bisa dibuka, tetapi
+      tidak diindeks Google sampai ada isinya.
+- [ ] Opsional: atur domain utama dengan atau tanpa `www`. Website otomatis me-redirect versi lainnya ke domain di
+      `NEXT_PUBLIC_SITE_URL`; pastikan DNS untuk kedua versi mengarah ke Hostinger.
 
 ---
 

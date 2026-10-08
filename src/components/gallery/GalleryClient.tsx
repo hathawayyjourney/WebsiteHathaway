@@ -34,6 +34,9 @@ export default function GalleryClient({
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
+  const lightboxPhoto = PHOTOS.find((p) => p.url === lightboxImg);
+  const lightboxAlt = lightboxPhoto?.title || lightboxPhoto?.category || 'Foto perjalanan Hathaway Journey';
+
   const filteredPhotos = activeCategory === 'Semua' 
     ? PHOTOS 
     : PHOTOS.filter(p => p.category === activeCategory);
@@ -102,7 +105,7 @@ export default function GalleryClient({
                   className="relative h-64 rounded-2xl overflow-hidden cursor-pointer group shadow-sm hover:shadow-md transition"
                   onClick={() => setLightboxImg(photo.url)}
                 >
-                  <Image src={photo.url} alt={photo.title || photo.category} fill className="object-cover group-hover:scale-110 transition duration-500" />
+                  <Image src={photo.url} alt={photo.title || photo.category} fill sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover group-hover:scale-110 transition duration-500" />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
                 </div>
                 </Reveal>
@@ -111,7 +114,7 @@ export default function GalleryClient({
               filteredVideos.map((video, i) => (
                 <Reveal key={video.id} delay={(i % 3) * 80}>
                 <div className="relative h-64 rounded-2xl overflow-hidden group shadow-sm cursor-pointer" onClick={() => video.videoUrl && setActiveVideo(video.videoUrl)}>
-                  <Image src={video.thumb} alt={video.title} fill className="object-cover group-hover:scale-105 transition duration-500" />
+                  <Image src={video.thumb} alt={video.title} fill sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover group-hover:scale-105 transition duration-500" />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition"></div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 group-hover:bg-brand-red group-hover:text-white transition">
@@ -145,9 +148,9 @@ export default function GalleryClient({
       {/* Lightbox */}
       {lightboxImg && (
         <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
-          <button className="absolute top-6 right-6 text-white text-xl font-bold">&times;</button>
+          <button className="absolute top-6 right-6 text-white text-xl font-bold" aria-label="Tutup">&times;</button>
           <div className="relative w-full max-w-5xl h-[80vh]">
-            <Image src={lightboxImg} alt="Fullscreen" fill className="object-contain" />
+            <Image src={lightboxImg} alt={lightboxAlt} fill sizes="100vw" className="object-contain" />
           </div>
         </div>
       )}

@@ -1,7 +1,20 @@
 import type { NextConfig } from "next";
 
+// One canonical host: www.domain ↔ domain is redirected (301) to the host in NEXT_PUBLIC_SITE_URL.
+const siteHost = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL ?? '').hostname;
+  } catch {
+    return '';
+  }
+})();
+const aliasHost = !siteHost || siteHost === 'localhost' || /^\d+(\.\d+){3}$/.test(siteHost)
+  ? null
+  : siteHost.startsWith('www.') ? siteHost.slice(4) : `www.${siteHost}`;
+
 const nextConfig: NextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -14,6 +27,17 @@ const nextConfig: NextConfig = {
     ],
   },
   poweredByHeader: false,
+  async redirects() {
+    if (!aliasHost) return [];
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: aliasHost }],
+        destination: `${process.env.NEXT_PUBLIC_SITE_URL!.replace(/\/+$/, '')}/:path*`,
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

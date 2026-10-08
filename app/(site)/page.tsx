@@ -8,6 +8,11 @@ import FinalCTA from '@/src/components/home/FinalCTA';
 import { getSettings } from '@/src/server/queries/settings';
 import { getFeaturedPackages, getPackageFilterOptions } from '@/src/server/queries/packages';
 import { waLink } from '@/src/lib/whatsapp';
+import { pageMetadata } from '@/src/lib/seo';
+import type { Metadata } from 'next';
+
+// Title and description come from the root layout defaults.
+export const metadata: Metadata = pageMetadata({ path: '/' });
 
 export default async function Home() {
   const [settings, featured, options] = await Promise.all([

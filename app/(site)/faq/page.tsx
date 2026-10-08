@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Image from 'next/image';
 import { Phone } from 'lucide-react';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
@@ -9,11 +10,15 @@ import { getFaqs } from '@/src/server/queries/content';
 import { getSettings } from '@/src/server/queries/settings';
 import { waLink } from '@/src/lib/whatsapp';
 import Reveal from '@/src/components/ui/Reveal';
+import JsonLd from '@/src/components/seo/JsonLd';
 
-export const metadata: Metadata = {
-  title: 'FAQ',
-  description: 'Pertanyaan yang sering diajukan seputar booking, pembayaran, visa, dan perjalanan bersama Hathaway Journey.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'FAQ Paket Tour & Booking',
+  description:
+    'Jawaban seputar booking, pembayaran, visa, dokumen, dan persiapan perjalanan paket tour luar negeri bersama Hathaway Journey.',
+  path: '/faq',
+  image: getImage('heroFaq'),
+});
 
 export default async function FaqPage() {
   const [faqs, { contact, wa_templates }] = await Promise.all([getFaqs(), getSettings('contact', 'wa_templates')]);
@@ -28,7 +33,7 @@ export default async function FaqPage() {
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      {faqs.length > 0 && <JsonLd data={jsonLd} />}
       <PageHero title="FAQ" subtitle="Pertanyaan yang sering diajukan seputar perjalanan bersama Hathaway Journey." image={getImage('heroFaq')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[900px]">

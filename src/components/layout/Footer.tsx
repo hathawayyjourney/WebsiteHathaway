@@ -47,12 +47,13 @@ export default function Footer({ contact, social }: { contact: ContactSettings; 
               Hathaway Journey adalah partner perjalanan terpercaya Anda. Kami menyediakan berbagai pilihan paket tour domestik dan internasional dengan pelayanan terbaik.
             </p>
             <div className="flex items-center gap-4">
-              {socials.map((item) => (
+              {/* Only accounts filled in admin: an empty "#" link is a dead link for visitors and crawlers. */}
+              {socials.filter((item) => item.href).map((item) => (
                 <a
                   key={item.label}
-                  href={item.href || '#'}
-                  target={item.href ? '_blank' : undefined}
-                  rel={item.href ? 'noopener noreferrer' : undefined}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={item.name}
                   className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold"
                 >

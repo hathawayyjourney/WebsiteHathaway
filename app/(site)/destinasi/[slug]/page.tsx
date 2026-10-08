@@ -12,20 +12,25 @@ import { getRelatedPackages } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
 import { waLink } from '@/src/lib/whatsapp';
 import Reveal from '@/src/components/ui/Reveal';
+import JsonLd from '@/src/components/seo/JsonLd';
+import { singleLine } from '@/src/lib/format';
+import { absoluteUrl, pageMetadata, toDescription } from '@/src/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const dest = await getDestinationBySlug((await params).slug);
   if (!dest) return { title: 'Destinasi tidak ditemukan' };
-  const title = dest.seoTitle || `Paket Tour ${dest.name}`;
-  const description = dest.metaDescription || dest.description || undefined;
-  return {
-    title,
-    description,
-    alternates: { canonical: `/destinasi/${dest.slug}` },
-    openGraph: { title, description, images: dest.image ? [dest.image] : undefined },
-  };
+  return pageMetadata({
+    title: dest.seoTitle || `Paket Tour ${dest.name}${dest.country && dest.country !== dest.name ? ` – ${dest.country}` : ''}`,
+    description:
+      toDescription(dest.metaDescription) ??
+      toDescription(
+        `${dest.description || ''} Paket tour ${dest.name} bersama Hathaway Journey: info destinasi, waktu terbaik berkunjung, dan pilihan paket tour.`,
+      ),
+    path: `/destinasi/${dest.slug}`,
+    image: dest.image ? { src: dest.image, alt: dest.name } : null,
+  });
 }
 
 export default async function DestinationDetailPage({ params }: Props) {
@@ -42,8 +47,34 @@ export default async function DestinationDetailPage({ params }: Props) {
     { icon: CalendarDays, label: 'Waktu Terbaik Berkunjung', value: dest.bestTime },
   ].filter((i) => i.value);
 
+  const url = absoluteUrl(`/destinasi/${dest.slug}`);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    '@id': `${url}#destination`,
+    name: dest.name,
+    description: toDescription(dest.information || dest.description, 500),
+    image: dest.image ? absoluteUrl(dest.image) : undefined,
+    url,
+    containedInPlace: dest.country && dest.country !== dest.name ? { '@type': 'Country', name: dest.country } : undefined,
+    subjectOf:
+      packages.length > 0
+        ? {
+            '@type': 'ItemList',
+            name: `Paket Tour ${dest.name}`,
+            itemListElement: packages.map((pkg, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              url: absoluteUrl(`/paket-tour/${pkg.id}`), // card id is the slug
+              name: singleLine(pkg.name),
+            })),
+          }
+        : undefined,
+  };
+
   return (
     <main className="min-h-screen pt-20 pb-0 bg-brand-light">
+      <JsonLd data={jsonLd} />
       <TrackView event="view_destination" params={{ destination: dest.slug }} />
       <PageHero title={dest.name.toUpperCase()} subtitle={dest.description ?? undefined} image={dest.image} />
 

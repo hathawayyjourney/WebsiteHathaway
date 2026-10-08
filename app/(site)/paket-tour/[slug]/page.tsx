@@ -7,26 +7,31 @@ import PageHero from '@/src/components/ui/PageHero';
 import PackageGallery from '@/src/components/package/PackageGallery';
 import BookingCard from '@/src/components/package/BookingCard';
 import TrackView from '@/src/components/analytics/TrackView';
-import { getPackageBySlug } from '@/src/server/queries/packages';
+import { getPackageBySlug, getSimilarPackages } from '@/src/server/queries/packages';
+import PackageCard from '@/src/components/package/PackageCard';
 import { getSettings } from '@/src/server/queries/settings';
 import { singleLine } from '@/src/lib/format';
 import Reveal from '@/src/components/ui/Reveal';
+import JsonLd from '@/src/components/seo/JsonLd';
+import { getPackageRating } from '@/src/server/queries/content';
+import { absoluteUrl, ORGANIZATION_ID, pageMetadata, SITE_NAME, toDescription } from '@/src/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pkg = await getPackageBySlug((await params).slug);
   if (!pkg) return { title: 'Paket tidak ditemukan' };
-  const title = pkg.seoTitle || singleLine(pkg.name);
-  const description = pkg.metaDescription || pkg.summary || undefined;
-  return {
-    title,
-    description,
-    alternates: { canonical: `/paket-tour/${pkg.slug}` },
-    openGraph: { title, description, images: [pkg.thumbnail] },
-  };
+  return pageMetadata({
+    title: pkg.seoTitle || `Paket Tour ${singleLine(pkg.name)} ${pkg.durationDays} Hari`,
+    // Without a custom meta description, pad the short summary with what the page offers.
+    description:
+      toDescription(pkg.metaDescription) ??
+      toDescription(
+        `${pkg.summary || pkg.description || ''} Paket tour ${singleLine(pkg.name)} ${pkg.durationDays} hari dari Hathaway Journey: itinerary, harga, dan jadwal keberangkatan.`,
+      ),
+    path: `/paket-tour/${pkg.slug}`,
+    image: { src: pkg.thumbnail, alt: singleLine(pkg.name) },
+  });
 }
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
@@ -42,6 +47,10 @@ export default async function PackageDetailPage({ params }: Props) {
   const { slug } = await params;
   const [pkg, { contact, wa_templates }] = await Promise.all([getPackageBySlug(slug), getSettings('contact', 'wa_templates')]);
   if (!pkg) notFound();
+  const [rating, similar] = await Promise.all([
+    getPackageRating(pkg.id),
+    getSimilarPackages(pkg.id, [...new Set(pkg.destinations.map((d) => d.region))]),
+  ]);
 
   const name = singleLine(pkg.name);
   const images = [...new Set([pkg.thumbnail, ...pkg.images.map((i) => i.url)])];
@@ -55,18 +64,53 @@ export default async function PackageDetailPage({ params }: Props) {
     { icon: Star, label: 'Rating', value: pkg.rating ? `${pkg.rating} / 5` : '-' },
   ];
 
+  const url = absoluteUrl(`/paket-tour/${pkg.slug}`);
+  const nextSchedule = pkg.schedules[0];
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'TouristTrip',
+    '@type': ['TouristTrip', 'Product'],
+    '@id': `${url}#trip`,
     name,
-    description: pkg.summary ?? undefined,
-    image: pkg.thumbnail,
-    offers: { '@type': 'Offer', price: pkg.promoPrice ?? pkg.price, priceCurrency: 'IDR', url: `${siteUrl}/paket-tour/${pkg.slug}` },
+    description: toDescription(pkg.summary || pkg.description, 500),
+    image: images.map(absoluteUrl),
+    url,
+    sku: pkg.code ?? undefined,
+    category: pkg.category?.name ?? undefined,
+    brand: { '@type': 'Brand', name: SITE_NAME },
+    provider: { '@id': ORGANIZATION_ID },
+    touristType: pkg.category?.name ?? undefined,
+    itinerary:
+      pkg.itinerary.length > 0
+        ? {
+            '@type': 'ItemList',
+            numberOfItems: pkg.itinerary.length,
+            itemListElement: pkg.itinerary.map((day) => ({
+              '@type': 'ListItem',
+              position: day.dayNo,
+              item: { '@type': 'TouristAttraction', name: `Hari ${day.dayNo}: ${day.title}` },
+            })),
+          }
+        : undefined,
+    offers: {
+      '@type': 'Offer',
+      price: pkg.promoPrice ?? pkg.price,
+      priceCurrency: 'IDR',
+      url,
+      // Status is maintained manually in admin; no upcoming date means "ask via WhatsApp".
+      availability: !nextSchedule
+        ? 'https://schema.org/PreOrder'
+        : nextSchedule.status === 'OPEN' || nextSchedule.status === 'LIMITED'
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/SoldOut',
+      seller: { '@id': ORGANIZATION_ID },
+    },
+    // Only real, published customer reviews of this package (not the manual rating field).
+    aggregateRating: rating ? { '@type': 'AggregateRating', ratingValue: rating.average, reviewCount: rating.count, bestRating: 5 } : undefined,
   };
 
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <JsonLd data={jsonLd} />
       <TrackView event="view_package" params={{ package: name, slug: pkg.slug }} />
       <PageHero title={name} subtitle={[pkg.countriesLabel, `${pkg.durationDays} Hari`].filter(Boolean).join(' • ')} image={pkg.thumbnail} />
 
@@ -215,7 +259,7 @@ export default async function PackageDetailPage({ params }: Props) {
             <div className="lg:sticky lg:top-28">
               <BookingCard
                 packageName={name}
-                packageUrl={`${siteUrl}/paket-tour/${pkg.slug}`}
+                packageUrl={url}
                 price={pkg.price}
                 promoPrice={pkg.promoPrice}
                 childPrice={pkg.childPrice}
@@ -232,6 +276,25 @@ export default async function PackageDetailPage({ params }: Props) {
             </div>
           </aside>
         </div>
+
+        {/* Internal links to similar trips (same regions); same heading + card grid as /destinasi/[slug]. */}
+        {similar.length > 0 && (
+          <section className="mt-16">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl lg:text-3xl font-black text-brand-navy tracking-tight">PAKET LAINNYA</h2>
+              <div className="w-16 h-1 bg-brand-red mx-auto mt-2 rounded-full relative">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-1 bg-brand-navy"></div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {similar.map((item, i) => (
+                <Reveal key={item.id} delay={(i % 4) * 80} className="h-full">
+                  <PackageCard data={item} />
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

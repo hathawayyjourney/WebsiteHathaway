@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Link from 'next/link';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
@@ -8,10 +9,13 @@ import { REGIONS, type Region } from '@/src/db/enums';
 import { listDestinations, REGION_LABELS } from '@/src/server/queries/destinations';
 import Reveal from '@/src/components/ui/Reveal';
 
-export const metadata: Metadata = {
-  title: 'Destinasi',
-  description: 'Jelajahi destinasi wisata domestik dan internasional bersama Hathaway Journey.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Destinasi Tour Luar Negeri',
+  description:
+    'Jelajahi destinasi tour luar negeri favorit di Asia, Eropa, dan Timur Tengah, lengkap dengan waktu terbaik berkunjung dan pilihan paket tour Hathaway Journey.',
+  path: '/destinasi',
+  image: getImage('heroDestinasi'),
+});
 
 // Sitemap FSD: Indonesia, Asia, Eropa, Timur Tengah, Destinasi Lain
 const TABS: Region[] = ['INDONESIA', 'ASIA', 'EROPA', 'TIMUR_TENGAH', 'LAINNYA'];

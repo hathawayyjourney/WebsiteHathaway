@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
 import { getSetting } from '@/src/server/queries/settings';
 
-export const metadata: Metadata = { title: 'Terms & Conditions' };
+export const metadata: Metadata = pageMetadata({
+  title: 'Terms & Conditions',
+  description:
+    'Syarat dan ketentuan pemesanan paket tour Hathaway Journey, termasuk pembayaran, pembatalan, dan tanggung jawab peserta.',
+  path: '/terms-conditions',
+  image: getImage('heroLegal'),
+});
 
 export default async function Page() {
   const legal = await getSetting('legal_pages');

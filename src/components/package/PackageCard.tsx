@@ -12,6 +12,7 @@ export default function PackageCard({ data }: { data: PackageData }) {
           src={data.image}
           alt={data.name}
           fill
+          sizes="(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw"
           className="object-cover zoom-on-hover"
         />
         {/* Top Badges */}

@@ -8,17 +8,42 @@ import { getImage } from '@/src/lib/images';
 import { getTestimonials } from '@/src/server/queries/content';
 import { formatDate } from '@/src/lib/format';
 import Reveal from '@/src/components/ui/Reveal';
+import JsonLd from '@/src/components/seo/JsonLd';
+import { ORGANIZATION_ID, pageMetadata } from '@/src/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Testimoni',
-  description: 'Cerita dan pengalaman pelanggan yang telah berlibur bersama Hathaway Journey.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Testimoni & Review Pelanggan',
+  description:
+    'Baca review dan pengalaman nyata pelanggan yang telah berlibur dengan paket tour luar negeri Hathaway Journey.',
+  path: '/testimoni',
+  image: getImage('heroTestimoni'),
+});
 
 export default async function TestimoniPage() {
   const testimonials = await getTestimonials();
 
+  // Individual reviews of the agency. No aggregateRating: Google ignores self-hosted ratings for a business.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Testimoni pelanggan Hathaway Journey',
+    itemListElement: testimonials.map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Review',
+        author: { '@type': 'Person', name: t.name },
+        reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5 },
+        reviewBody: t.review,
+        datePublished: t.date ?? undefined,
+        itemReviewed: { '@id': ORGANIZATION_ID },
+      },
+    })),
+  };
+
   return (
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
+      {testimonials.length > 0 && <JsonLd data={jsonLd} />}
       <PageHero title="TESTIMONI" subtitle="Cerita dan pengalaman pelanggan yang telah berlibur bersama Hathaway Journey." image={getImage('heroTestimoni')} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
@@ -37,7 +62,7 @@ export default async function TestimoniPage() {
                 <blockquote className="text-gray-600 leading-relaxed flex-1 whitespace-pre-line">“{t.review}”</blockquote>
                 <figcaption className="flex items-center gap-3 mt-6 pt-6 border-t border-gray-100">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden bg-brand-softblue text-brand-navy font-bold flex items-center justify-center shrink-0">
-                    {t.photo ? <Image src={t.photo} alt={t.name} fill className="object-cover" /> : t.name.charAt(0)}
+                    {t.photo ? <Image src={t.photo} alt={t.name} fill sizes="48px" className="object-cover" /> : t.name.charAt(0)}
                   </div>
                   <div>
                     <p className="font-bold text-brand-navy">{t.name}</p>
