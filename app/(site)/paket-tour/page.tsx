@@ -7,17 +7,31 @@ import Pagination from '@/src/components/ui/Pagination';
 import SortSelect from '@/src/components/package/SortSelect';
 import { SlidersHorizontal } from 'lucide-react';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Image from 'next/image';
 import { getPackageFilterOptions, searchPackages } from '@/src/server/queries/packages';
 import { PAGE_SIZE, parsePackageSearchParams } from '@/src/lib/package-filters';
 import Reveal from '@/src/components/ui/Reveal';
 
-export const metadata: Metadata = {
-  title: 'Paket Tour',
-  description: 'Temukan paket tour domestik dan internasional terbaik dari Hathaway Journey.',
-};
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
-export default async function PaketTourPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+// Filtered/sorted lists point their canonical to the plain list; only pagination keeps its own URL.
+// Keyword searches (?q=) are internal search results and stay out of the index.
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { q, page, region, negara, jenis, durasi, harga, tanggal, sort } = parsePackageSearchParams(await searchParams);
+  const filtered = !!(region?.length || negara?.length || jenis?.length || durasi?.length || harga || tanggal || sort);
+  const paged = !filtered && !q && page && page > 1;
+  return pageMetadata({
+    title: paged ? `Paket Tour Luar Negeri – Halaman ${page}` : 'Paket Tour Luar Negeri Terbaik',
+    description:
+      'Pilihan paket tour luar negeri ke Asia, Eropa, dan Timur Tengah. Bandingkan harga, durasi, dan jadwal keberangkatan, lalu booking mudah via WhatsApp.',
+    path: paged ? `/paket-tour?page=${page}` : '/paket-tour',
+    image: getImage('heroPaketTour'),
+    noindex: !!q,
+  });
+}
+
+export default async function PaketTourPage({ searchParams }: Props) {
   const sp = await searchParams;
   const filters = parsePackageSearchParams(sp);
   const [{ items: packages, total, page, totalPages }, options] = await Promise.all([

@@ -11,6 +11,19 @@ const HERO_OVERLAY = [
 
 const TEXT_SHADOW = '0 2px 12px rgba(0,0,0,0.35)';
 
+// Hosts allowed in next.config.ts images.remotePatterns, so next/image can optimize them.
+const OPTIMIZED_HOSTS = ['images.unsplash.com', 'res.cloudinary.com'];
+
+function canOptimize(src: string): boolean {
+  if (src.startsWith('/')) return true;
+  try {
+    const url = new URL(src);
+    return url.protocol === 'https:' && OPTIMIZED_HOSTS.includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 // Hero band shared by every inner page: sharp photo + navy gradient, plain navy when there is no image.
 export default function PageHero({
   title,
@@ -24,15 +37,17 @@ export default function PageHero({
 }) {
   const image = typeof imageProp === 'string' ? imageProp : imageProp?.src;
   const position = typeof imageProp === 'object' && imageProp ? imageProp.position : undefined;
+  // Static assets carry their own alt; admin photos (package/destination) describe the page subject.
+  const alt = typeof imageProp === 'object' && imageProp ? imageProp.alt : title;
 
   return (
     <div className="bg-brand-navy py-16 lg:py-20 relative overflow-hidden mb-10">
       {image &&
-        (image.startsWith('/') ? (
-          // Local assets (public/images) are optimized by next/image.
-          <Image src={image} alt="" fill priority sizes="100vw" className="absolute inset-0 z-0 object-cover anim-ken-burns" style={{ objectPosition: position }} />
+        (canOptimize(image) ? (
+          // Local assets and Unsplash/Cloudinary photos are optimized by next/image (and visible to image search).
+          <Image src={image} alt={alt} fill priority sizes="100vw" className="absolute inset-0 z-0 object-cover anim-ken-burns" style={{ objectPosition: position }} />
         ) : (
-          // Admin-provided URLs may be on any host, so keep them as a CSS background.
+          // Admin-provided URLs on any other host stay a CSS background.
           <div className="absolute inset-0 z-0 bg-cover bg-center anim-ken-burns" style={{ backgroundImage: `url('${image}')`, backgroundPosition: position }}></div>
         ))}
       {image && <div className="absolute inset-0 z-0" style={{ backgroundImage: HERO_OVERLAY }}></div>}

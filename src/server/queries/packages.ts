@@ -1,6 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
-import { and, asc, desc, eq, gte, inArray, like, lte, or, sql, type SQL } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, like, lte, ne, or, sql, type SQL } from 'drizzle-orm';
 import { connection } from 'next/server';
 import { db } from '@/src/db';
 import {
@@ -250,6 +250,33 @@ export async function getRelatedPackages(destinationId: number, limit = 8) {
       ),
     )
     .orderBy(asc(packages.sort))
+    .limit(limit);
+  return rows.map((r) => toPackageCardData(r as CardRow));
+}
+
+/** Other published packages in the same regions as this package (for "Paket Lainnya" on the detail page). */
+export async function getSimilarPackages(packageId: number, regions: Region[], limit = 4) {
+  await connection();
+  const rows = await db
+    .select(cardColumns)
+    .from(packages)
+    .where(
+      and(
+        eq(packages.status, 'PUBLISHED'),
+        ne(packages.id, packageId),
+        regions.length
+          ? inArray(
+              packages.id,
+              db
+                .select({ id: packageDestinations.packageId })
+                .from(packageDestinations)
+                .innerJoin(destinations, eq(destinations.id, packageDestinations.destinationId))
+                .where(inArray(destinations.region, regions)),
+            )
+          : undefined,
+      ),
+    )
+    .orderBy(desc(packages.featured), asc(packages.sort), desc(packages.id))
     .limit(limit);
   return rows.map((r) => toPackageCardData(r as CardRow));
 }

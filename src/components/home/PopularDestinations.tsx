@@ -1,4 +1,5 @@
 import DestinationCard from '../destination/DestinationCard';
+import { regionPageHref } from '@/src/lib/regions';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { SETTINGS_DEFAULTS, type HomeRegion } from '@/src/lib/settings-defaults';
@@ -34,7 +35,8 @@ export default function PopularDestinations({ regions }: { regions: HomeRegion[]
               image: REGION_IMAGE_KEYS[item.region]
                 ? pickImage(REGION_IMAGE_KEYS[item.region], item.image, DEFAULT_IMAGES.get(item.region) ?? item.image)
                 : item.image,
-              href: `/destinasi?region=${item.region.toLowerCase()}`,
+              // Regions with a landing page link there (SEO); "Destinasi Lain" keeps the filtered list.
+              href: regionPageHref(item.region) ?? `/destinasi?region=${item.region.toLowerCase()}`,
             }}
           />
           </Reveal>

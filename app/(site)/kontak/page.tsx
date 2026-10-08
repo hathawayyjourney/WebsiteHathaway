@@ -3,15 +3,19 @@ import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import ContactForm from '@/src/components/contact/ContactForm';
 import CardImage from '@/src/components/ui/CardImage';
 import { getSetting } from '@/src/server/queries/settings';
 import Reveal from '@/src/components/ui/Reveal';
 
-export const metadata: Metadata = {
-  title: 'Kontak',
-  description: 'Hubungi tim Hathaway Journey untuk konsultasi perjalanan Anda.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Kontak & Konsultasi Tour',
+  description:
+    'Hubungi Hathaway Journey via WhatsApp, telepon, atau email untuk konsultasi paket tour luar negeri. Alamat kantor dan jam operasional tersedia di sini.',
+  path: '/kontak',
+  image: getImage('heroKontak'),
+});
 
 export default async function KontakPage() {
   const contact = await getSetting('contact');

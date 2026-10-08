@@ -20,10 +20,9 @@ export default function PackageGallery({ images, alt }: { images: string[]; alt:
               key={src + i}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`Foto ${i + 1}`}
               className={`relative h-16 sm:h-20 rounded-xl overflow-hidden border-2 transition ${i === active ? 'border-brand-navy' : 'border-transparent opacity-70 hover:opacity-100'}`}
             >
-              <Image src={src} alt="" fill className="object-cover" sizes="120px" />
+              <Image src={src} alt={`${alt} – foto ${i + 1}`} fill className="object-cover" sizes="120px" />
             </button>
           ))}
         </div>
@@ -33,7 +32,7 @@ export default function PackageGallery({ images, alt }: { images: string[]; alt:
         <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(false)}>
           <button className="absolute top-6 right-6 text-white text-xl font-bold" aria-label="Tutup">&times;</button>
           <div className="relative w-full max-w-5xl h-[80vh]">
-            <Image src={images[active]} alt={alt} fill className="object-contain" />
+            <Image src={images[active]} alt={alt} fill sizes="100vw" className="object-contain" />
           </div>
         </div>
       )}

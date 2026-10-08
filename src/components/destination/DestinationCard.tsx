@@ -8,6 +8,8 @@ export default function DestinationCard({ data }: { data: { id: string, name: st
         src={data.image}
         alt={data.name}
         fill
+        // Grids show 2–5 cards per row.
+        sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
         className="object-cover group-hover:scale-110 transition duration-500"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-black/20 to-transparent"></div>

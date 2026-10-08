@@ -1,6 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
-import { and, asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { connection } from 'next/server';
 import { db } from '@/src/db';
 import { faqs, gallery, legalDocuments, partners, teams, testimonials } from '@/src/db/schema';
@@ -17,6 +17,17 @@ export const getTestimonials = cache(async (opts: { featuredOnly?: boolean } = {
     .from(testimonials)
     .where(and(eq(testimonials.status, 'PUBLISHED'), opts.featuredOnly ? eq(testimonials.featured, true) : undefined))
     .orderBy(desc(testimonials.featured), desc(testimonials.date), desc(testimonials.id));
+});
+
+/** Average of published testimonials linked to a package (for schema.org aggregateRating). */
+export const getPackageRating = cache(async (packageId: number) => {
+  await connection();
+  const [row] = await db
+    .select({ average: sql<string | null>`AVG(${testimonials.rating})`, count: sql<number>`COUNT(*)` })
+    .from(testimonials)
+    .where(and(eq(testimonials.packageId, packageId), eq(testimonials.status, 'PUBLISHED')));
+  const count = Number(row?.count ?? 0);
+  return count > 0 ? { average: Math.round(Number(row.average) * 10) / 10, count } : null;
 });
 
 export const getFaqs = cache(async () => {

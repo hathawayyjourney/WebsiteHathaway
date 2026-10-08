@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
@@ -8,10 +9,13 @@ import { getBookingOptions } from '@/src/server/queries/packages';
 import { getSettings } from '@/src/server/queries/settings';
 import Reveal from '@/src/components/ui/Reveal';
 
-export const metadata: Metadata = {
-  title: 'Booking',
-  description: 'Booking paket tour Hathaway Journey langsung melalui WhatsApp.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Booking Paket Tour via WhatsApp',
+  description:
+    'Pilih paket tour dan tanggal keberangkatan, lalu kirim permintaan booking langsung ke tim Hathaway Journey via WhatsApp. Cepat, mudah, tanpa biaya tambahan.',
+  path: '/booking',
+  image: getImage('heroBooking'),
+});
 
 const STEPS = [
   { title: 'Pilih paket & jadwal', desc: 'Tentukan paket tour, tanggal keberangkatan, dan jumlah peserta.' },

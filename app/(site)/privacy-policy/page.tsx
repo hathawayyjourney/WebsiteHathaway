@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
 import { getSetting } from '@/src/server/queries/settings';
 
-export const metadata: Metadata = { title: 'Privacy Policy' };
+export const metadata: Metadata = pageMetadata({
+  title: 'Privacy Policy',
+  description:
+    'Kebijakan privasi Hathaway Journey: data apa yang kami kumpulkan, bagaimana digunakan, dan bagaimana kami melindunginya.',
+  path: '/privacy-policy',
+  image: getImage('heroLegal'),
+});
 
 export default async function Page() {
   const legal = await getSetting('legal_pages');

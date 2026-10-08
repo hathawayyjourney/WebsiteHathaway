@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/src/lib/seo';
 import GalleryClient from '@/src/components/gallery/GalleryClient';
 import { getGallery } from '@/src/server/queries/content';
 import { getImage } from '@/src/lib/images';
 
-export const metadata: Metadata = {
-  title: 'Gallery',
-  description: 'Kumpulan momen indah perjalanan dan testimoni dari pelanggan Hathaway Journey.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Gallery Perjalanan',
+  description:
+    'Foto dan video momen perjalanan peserta paket tour luar negeri Hathaway Journey di berbagai destinasi dunia.',
+  path: '/gallery',
+  image: getImage('heroGallery'),
+});
 
 const VIDEO_TAB = { VIDEO_TOUR: 'VIDEO TOUR', VIDEO_TESTIMONI: 'VIDEO TESTIMONI' } as const;
 

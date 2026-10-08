@@ -21,7 +21,9 @@ export default function HeroSection({ whatsappHref }: { whatsappHref: string }) 
           </div>
           
           <h1 className="anim-fade-up text-4xl lg:text-[60px] font-black leading-[1.1] mb-6 tracking-tight" style={{ '--anim-delay': '120ms' } as React.CSSProperties}>
-            <span className="text-brand-navy block">EXPLORE MORE,</span>
+            {/* Screen readers and search engines read the brand + main keyword; the visible headline is unchanged. */}
+            <span className="sr-only">Hathaway Journey – Paket Tour Luar Negeri: </span>
+            <span className="text-brand-navy block">EXPLORE MORE,</span>{' '}
             <span className="text-brand-red block">CREATE MEMORIES</span>
           </h1>
           
