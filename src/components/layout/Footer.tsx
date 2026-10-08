@@ -3,6 +3,7 @@ import { MapPin, Phone, Mail } from 'lucide-react';
 
 import Image from 'next/image';
 import type { ContactSettings, SocialSettings } from '@/src/lib/settings-defaults';
+import { getImage } from '@/src/lib/images';
 
 export default function Footer({ contact, social }: { contact: ContactSettings; social: SocialSettings }) {
   const socials = [
@@ -10,10 +11,25 @@ export default function Footer({ contact, social }: { contact: ContactSettings; 
     { label: 'FB', name: 'Facebook', href: social.facebook },
     { label: 'YT', name: 'YouTube', href: social.youtube },
   ];
+  const worldMap = getImage('decorWorldMap');
 
   return (
-    <footer className="bg-brand-dark text-white pt-16 pb-8">
-      <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
+    <footer className="relative overflow-hidden bg-brand-dark text-white pt-16 pb-8">
+      {/* Faint dotted world map. The asset is grey dots on white, so invert it and blend with
+          "screen": the white background disappears and only light dots remain. Plain CSS
+          (no Tailwind filter variables) so it also renders in older Safari. */}
+      {worldMap && (
+        <Image
+          src={worldMap.src}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover object-center pointer-events-none select-none"
+          style={{ filter: 'invert(1)', mixBlendMode: 'screen', opacity: 0.16 }}
+        />
+      )}
+      <div className="relative container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           
           {/* Column 1: About */}
