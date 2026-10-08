@@ -35,7 +35,16 @@ const hero = (id: string, slug: string, alt: string, opts: { fallback?: string; 
 
 export const IMAGE_ASSETS = {
   // A. Page heroes
-  homeHero: { id: 'H1', file: 'images/home/hero.webp', width: 2560, height: 1440, alt: 'Sayap pesawat di atas awan', kind: 'photo', fallback: unsplash('photo-1436491865332-7a61a109cc05') },
+  // Home hero: Southeast Asia landmark collage from the client (replaced H1).
+  homeHero: {
+    id: 'H12',
+    file: 'images/home/hero-asia.webp',
+    width: 2560,
+    height: 1252,
+    alt: 'Kolase landmark Malaysia, Singapura, dan Thailand dengan pesawat',
+    kind: 'photo',
+    fallback: unsplash('photo-1436491865332-7a61a109cc05'),
+  },
   // Shared by Paket Tour, Destinasi (incl. region pages), Gallery and Tentang Kami (client request; replaced H2–H5).
   heroAsiaCollage: {
     id: 'H11',
