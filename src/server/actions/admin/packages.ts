@@ -28,12 +28,16 @@ const PackageSchema = z.object({
   code: z.string().max(40).nullable(),
   categoryId: z.number().int().nullable(),
   durationDays: z.number({ error: 'Durasi wajib diisi.' }).int().min(1).max(60),
+  durationNights: z.number().int().min(0, { error: 'Jumlah malam tidak boleh negatif.' }).max(60).nullable(),
   price: money,
   promoPrice: money.nullable(),
   thumbnail: z.url({ error: 'Thumbnail wajib berupa URL gambar.' }),
   rating: z.number().min(0).max(5).nullable(),
   badge: z.enum(PACKAGE_BADGES).nullable(),
   status: z.enum(PACKAGE_STATUS),
+}).refine((p) => p.durationNights == null || p.durationNights <= p.durationDays, {
+  error: 'Jumlah malam tidak boleh lebih dari jumlah hari.',
+  path: ['durationNights'],
 });
 
 export async function savePackage(_prev: ActionState, fd: FormData): Promise<ActionState> {
@@ -47,6 +51,7 @@ export async function savePackage(_prev: ActionState, fd: FormData): Promise<Act
     code: optStr(fd, 'code'),
     categoryId: optNum(fd, 'categoryId'),
     durationDays: optNum(fd, 'durationDays') ?? undefined,
+    durationNights: optNum(fd, 'durationNights'),
     price: optNum(fd, 'price') ?? undefined,
     promoPrice: optNum(fd, 'promoPrice'),
     thumbnail: str(fd, 'thumbnail'),

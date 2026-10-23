@@ -9,22 +9,17 @@ import { formatRupiah } from '@/src/lib/format';
 type Option = { value: string; label: string };
 type FilterKey = 'region' | 'negara' | 'jenis' | 'durasi';
 
-const REGION_OPTIONS: Option[] = [
-  { value: 'INDONESIA', label: 'Indonesia' },
-  { value: 'ASIA', label: 'Asia' },
-  { value: 'EROPA', label: 'Eropa' },
-  { value: 'TIMUR_TENGAH', label: 'Timur Tengah' },
-  { value: 'AFRIKA', label: 'Afrika' },
-  { value: 'AMERIKA', label: 'Amerika' },
-];
 const MAX_PRICE = 50_000_000;
 
 export default function FilterPanel({
   current,
+  regions,
   destinations,
   categories,
 }: {
   current: PackageSearchParams;
+  /** Regions that have destinations (built on the server from admin data). */
+  regions: Option[];
   destinations: { slug: string; name: string }[];
   categories: { slug: string; name: string }[];
 }) {
@@ -83,7 +78,7 @@ export default function FilterPanel({
   };
 
   const filterSections: { key: FilterKey; title: string; options: Option[] }[] = [
-    { key: 'region', title: 'Destinasi', options: REGION_OPTIONS },
+    { key: 'region', title: 'Destinasi', options: regions },
     { key: 'negara', title: 'Negara', options: destinations.map((d) => ({ value: d.slug, label: d.name })) },
     { key: 'jenis', title: 'Jenis Trip', options: categories.map((c) => ({ value: c.slug, label: c.name })) },
     { key: 'durasi', title: 'Durasi', options: DURATION_BUCKETS.map((b) => ({ value: b.value, label: b.label })) },

@@ -17,10 +17,6 @@ export function regionPageBySlug(slug: string): RegionPage | undefined {
   return REGION_PAGES.find((r) => r.slug === slug);
 }
 
-export function regionPageHref(region: string): string | undefined {
-  const page = REGION_PAGES.find((r) => r.region === region);
-  return page ? `/destinasi/wilayah/${page.slug}` : undefined;
-}
 
 /** "Jepang, Korea, dan Thailand" */
 export function joinNames(names: string[], max = 4): string {

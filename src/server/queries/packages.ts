@@ -14,6 +14,7 @@ import {
   type Region,
 } from '@/src/db/schema';
 import { formatDate, formatRupiah } from '@/src/lib/format';
+import { formatDurationShort } from '@/src/lib/duration';
 import type { PackageData, PackageBadge } from '@/src/types';
 import { DURATION_BUCKETS, PAGE_SIZE, type PackageSearchParams } from '@/src/lib/package-filters';
 
@@ -35,6 +36,7 @@ const cardColumns = {
   slug: packages.slug,
   name: packages.name,
   durationDays: packages.durationDays,
+  durationNights: packages.durationNights,
   countriesLabel: packages.countriesLabel,
   departureLabel: packages.departureLabel,
   price: packages.price,
@@ -49,6 +51,7 @@ type CardRow = {
   slug: string;
   name: string;
   durationDays: number;
+  durationNights: number | null;
   countriesLabel: string | null;
   departureLabel: string | null;
   price: number;
@@ -65,7 +68,7 @@ export function toPackageCardData(row: CardRow): PackageData {
     id: row.slug, // PackageCard links to /paket-tour/{id}
     name: row.name,
     destination: row.countriesLabel ?? '',
-    duration: `${row.durationDays}D`,
+    duration: formatDurationShort(row.durationDays, row.durationNights),
     countries: row.countriesLabel ?? '',
     departure: row.departureLabel || (row.nextDeparture ? formatDate(row.nextDeparture, 'short') : 'Hubungi Admin'),
     price: formatRupiah(row.promoPrice ?? row.price),
