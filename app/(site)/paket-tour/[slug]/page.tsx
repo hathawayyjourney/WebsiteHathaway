@@ -11,6 +11,7 @@ import { getPackageBySlug, getSimilarPackages } from '@/src/server/queries/packa
 import PackageCard from '@/src/components/package/PackageCard';
 import { getSettings } from '@/src/server/queries/settings';
 import { singleLine } from '@/src/lib/format';
+import { formatDuration } from '@/src/lib/duration';
 import Reveal from '@/src/components/ui/Reveal';
 import JsonLd from '@/src/components/seo/JsonLd';
 import { getPackageRating } from '@/src/server/queries/content';
@@ -22,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pkg = await getPackageBySlug((await params).slug);
   if (!pkg) return { title: 'Paket tidak ditemukan' };
   return pageMetadata({
-    title: pkg.seoTitle || `Paket Tour ${singleLine(pkg.name)} ${pkg.durationDays} Hari`,
+    title: pkg.seoTitle || `Paket Tour ${singleLine(pkg.name)} ${formatDuration(pkg.durationDays, pkg.durationNights)}`,
     // Without a custom meta description, pad the short summary with what the page offers.
     description:
       toDescription(pkg.metaDescription) ??
       toDescription(
-        `${pkg.summary || pkg.description || ''} Paket tour ${singleLine(pkg.name)} ${pkg.durationDays} hari dari Hathaway Journey: itinerary, harga, dan jadwal keberangkatan.`,
+        `${pkg.summary || pkg.description || ''} Paket tour ${singleLine(pkg.name)} ${formatDuration(pkg.durationDays, pkg.durationNights).toLowerCase()} dari Hathaway Journey: itinerary, harga, dan jadwal keberangkatan.`,
       ),
     path: `/paket-tour/${pkg.slug}`,
     image: { src: pkg.thumbnail, alt: singleLine(pkg.name) },
@@ -58,7 +59,7 @@ export default async function PackageDetailPage({ params }: Props) {
   const youtubeId = pkg.videoUrl?.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/)?.[1];
 
   const facts = [
-    { icon: Clock, label: 'Durasi', value: `${pkg.durationDays} Hari` },
+    { icon: Clock, label: 'Durasi', value: formatDuration(pkg.durationDays, pkg.durationNights) },
     { icon: MapPin, label: 'Destinasi', value: destinationNames || pkg.countriesLabel || '-' },
     { icon: Tag, label: 'Kategori', value: pkg.category?.name ?? '-' },
     { icon: Star, label: 'Rating', value: pkg.rating ? `${pkg.rating} / 5` : '-' },
@@ -112,7 +113,7 @@ export default async function PackageDetailPage({ params }: Props) {
     <main className="min-h-screen pt-20 pb-20 bg-brand-light">
       <JsonLd data={jsonLd} />
       <TrackView event="view_package" params={{ package: name, slug: pkg.slug }} />
-      <PageHero title={name} subtitle={[pkg.countriesLabel, `${pkg.durationDays} Hari`].filter(Boolean).join(' • ')} image={pkg.thumbnail} />
+      <PageHero title={name} subtitle={[pkg.countriesLabel, formatDuration(pkg.durationDays, pkg.durationNights)].filter(Boolean).join(' • ')} image={pkg.thumbnail} />
 
       <div className="container mx-auto px-4 lg:px-8 max-w-[1250px]">
         <Breadcrumb items={[{ label: 'Paket Tour', href: '/paket-tour' }, { label: name }]} />
