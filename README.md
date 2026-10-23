@@ -476,6 +476,32 @@ Hanya diperlukan bila developer mengubah `src/db/schema.ts`.
 - Tutup **Remote MySQL** jika tidak sedang dipakai.
 - Nonaktifkan (bukan hapus) user admin yang sudah tidak bekerja: **Users** → hilangkan centang **Aktif**.
 
+**Notifikasi kerentanan di Hostinger (Hosting Security → Vulnerabilities)**
+
+Hostinger memindai paket npm website dan menampilkan paket yang punya celah keamanan. Cara menanganinya:
+
+1. **Jangan** klik **Atur otomatis** / **Upgrade** di panel Hostinger. Website di-deploy dari GitHub, jadi
+   perubahan langsung di server akan tertimpa saat deploy berikutnya.
+2. Perbarui paketnya di repo (di komputer developer):
+
+   ```bash
+   npm audit                       # lihat paket yang bermasalah dan versi perbaikannya
+   npm install next@<versi-aman>   # paket langsung; versi next & eslint-config-next disamakan
+   npm update <paket-transitif>    # paket turunan, mis. brace-expansion, source-map-js
+   npm run build                   # pastikan build tetap jalan
+   ```
+
+3. Commit `package.json` **dan** `package-lock.json`, push, lalu merge ke `main` → Hostinger redeploy otomatis.
+4. Di Hostinger, buka lagi halaman Vulnerabilities → **Scan ulang**.
+
+Temuan yang **boleh diabaikan** karena hanya ada di tool developer (tidak dijalankan di server produksi) dan belum
+punya versi perbaikan yang kompatibel (per Oktober 2026):
+
+| Paket | Datang dari | Alasan |
+|---|---|---|
+| `esbuild` 0.18 / 0.25 | `drizzle-kit`, `tsx` (migrasi & script) | Celah hanya pada dev server esbuild; perbaikan butuh downgrade `drizzle-kit`. |
+| `braces` → `micromatch` → `fast-glob` | `eslint-config-next` (lint) | Belum ada rilis `braces` yang diperbaiki. |
+
 ---
 
 ## 13. Troubleshooting
