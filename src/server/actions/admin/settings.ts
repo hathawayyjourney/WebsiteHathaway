@@ -47,12 +47,6 @@ function build(key: SettingKey, fd: FormData): SettingsMap[SettingKey] | z.ZodEr
       return rows(fd, 'stats', 4, ['value', 'label']).filter((r) => r.value) as SettingsMap['home_stats'];
     case 'home_benefits':
       return rows(fd, 'benefits', 6, ['title', 'desc']).filter((r) => r.title) as SettingsMap['home_benefits'];
-    case 'home_regions':
-      return SETTINGS_DEFAULTS.home_regions.map((d, i) => ({
-        region: d.region,
-        label: str(fd, `regions.${i}.label`) || d.label,
-        image: str(fd, `regions.${i}.image`) || d.image,
-      }));
     case 'company':
       return {
         about: str(fd, 'about'),
