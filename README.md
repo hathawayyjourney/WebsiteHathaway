@@ -316,6 +316,7 @@ di sidebar dashboard website. Bisa juga **Import .env**: buat file teks berisi d
 | `CLOUDINARY_FOLDER` | ⭕ | `hathaway` | Nama folder penyimpanan di Cloudinary. |
 | `NEXT_PUBLIC_GA_ID` | ⭕ | `G-AB12CD34EF` | Kosongkan jika tidak memakai Google Analytics. |
 | `NEXT_PUBLIC_GSC_VERIFICATION` | ⭕ | `abc123XYZ...` | Kode verifikasi Google Search Console metode **HTML tag** (hanya isi `content="..."`). Tidak perlu bila verifikasi lewat DNS. |
+| `NEXT_PUBLIC_BING_VERIFICATION` | ⭕ | `1A2B3C...` | Kode verifikasi Bing Webmaster Tools metode **HTML Meta Tag** (`msvalidate.01`). Tidak perlu bila impor dari Search Console. |
 
 ✅ = wajib · ⭕ = opsional (fitur terkait nonaktif bila kosong). `SEED_ADMIN_*` **tidak** perlu diisi di Hostinger.
 
@@ -337,6 +338,7 @@ CLOUDINARY_API_SECRET=xxxx
 CLOUDINARY_FOLDER=hathaway
 NEXT_PUBLIC_GA_ID=
 NEXT_PUBLIC_GSC_VERIFICATION=
+NEXT_PUBLIC_BING_VERIFICATION=
 ```
 
 > 🔒 Jangan pernah commit file berisi nilai asli ke GitHub. File `.env` sudah di-ignore oleh Git; yang ada di repo
@@ -395,7 +397,20 @@ FAQ, testimoni). Yang perlu Anda lakukan:
 - [ ] **Google Search Console** (<https://search.google.com/search-console>) → tambah properti → verifikasi:
   - via **DNS** (hPanel → Domains → DNS / Nameservers → tambahkan record TXT), **atau**
   - via **HTML tag**: salin nilai `content="..."` ke env `NEXT_PUBLIC_GSC_VERIFICATION` lalu simpan (redeploy).
-- [ ] Search Console → **Sitemaps** → submit `sitemap.xml`.
+- [ ] Search Console → **Sitemaps** → submit `sitemap.xml`. Lalu **URL Inspection** → *Request indexing* untuk
+      Home, `/paket-tour`, dan beberapa paket utama agar lebih cepat dirayapi.
+- [ ] **Google Analytics 4**: isi env `NEXT_PUBLIC_GA_ID` (kode `G-…`) → simpan (redeploy) → cek GA4 → **Realtime**.
+      Event yang tercatat: `view_package`, `view_destination`, `search_package`, `submit_contact`,
+      `click_booking_wa`, dan `click_whatsapp` (dengan parameter `location`: `floating`, `header`, `home_hero`,
+      `cta`, `faq`, atau dari kartu booking). Tandai `click_booking_wa` & `click_whatsapp` sebagai **Key event** di GA4.
+- [ ] **Bing Webmaster Tools** (<https://www.bing.com/webmasters>) → *Import from Google Search Console* (paling
+      cepat) atau verifikasi via meta tag (env `NEXT_PUBLIC_BING_VERIFICATION`) → submit `sitemap.xml`.
+      Indeks Bing juga dipakai ChatGPT Search & Microsoft Copilot.
+- [ ] **Google Business Profile** (<https://business.google.com>) → daftarkan alamat kantor + link website. Paling
+      berpengaruh untuk pencarian lokal dan Google Maps.
+- [ ] **AI assistant**: website menyediakan `/llms.txt` (ringkasan bisnis, kontak, paket, destinasi) yang dibuat
+      otomatis dari data admin. Pastikan CDN Hostinger tidak memblokir crawler AI (hPanel → **CDN** → pengaturan
+      bot / Traffic blocking) bila ingin muncul di ChatGPT, Perplexity, dll.
 - [ ] Uji satu halaman paket di **Rich Results Test** (<https://search.google.com/test/rich-results>) → harus
       terbaca *Product* dan *Breadcrumbs* tanpa error.
 - [ ] Di admin, isi kolom **SEO Title** & **Meta Description** tiap paket/destinasi (opsional, tapi membantu).

@@ -4,6 +4,7 @@ export default function WhatsAppFloating({ href }: { href: string }) {
   return (
     <a
       href={href}
+      data-wa="floating"
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-50 bg-brand-wa text-white w-14 h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 hover:scale-110 transition-all duration-300 group wa-float wa-pulse"

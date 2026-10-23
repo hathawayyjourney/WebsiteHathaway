@@ -27,8 +27,11 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, images: [DEFAULT_OG_IMAGE.url] },
   // Indexing is the default; only allow large image previews. (Not-found pages get Next's own "noindex".)
   robots: { googleBot: { "max-image-preview": "large", "max-snippet": -1 } },
-  // Google Search Console "HTML tag" verification (optional).
-  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } : undefined,
+  // Search engine "HTML tag" verification (optional): Google Search Console and Bing Webmaster Tools.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_VERIFICATION ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION } : undefined,
+  },
 };
 
 export const viewport: Viewport = {

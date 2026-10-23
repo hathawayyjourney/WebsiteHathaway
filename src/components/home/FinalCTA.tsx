@@ -36,6 +36,7 @@ export default function FinalCTA({ whatsappHref }: { whatsappHref: string }) {
         <div className="relative z-10 w-full md:w-auto flex justify-center md:justify-end">
           <a 
             href={whatsappHref}
+            data-wa="cta"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-brand-wa hover:bg-green-600 text-white px-8 py-5 rounded-full font-bold flex items-center justify-center gap-3 transition btn-press shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full sm:w-auto"

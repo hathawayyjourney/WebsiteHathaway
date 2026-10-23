@@ -70,6 +70,7 @@ export default async function FaqPage() {
               <p className="text-sm text-gray-600 mb-6">Tim kami siap membantu menjawab pertanyaan Anda seputar paket, visa, dan pembayaran.</p>
               <a
                 href={waLink(contact.whatsapp, wa_templates.general)}
+                data-wa="faq"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="self-start inline-flex items-center gap-2 bg-brand-wa hover:bg-green-600 text-white px-6 py-3 rounded-full font-semibold transition btn-press shadow-md"

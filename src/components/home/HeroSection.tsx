@@ -55,6 +55,7 @@ export default function HeroSection({ whatsappHref }: { whatsappHref: string }) 
             
             <a 
               href={whatsappHref}
+              data-wa="home_hero"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-wa text-white border-brand-wa px-8 py-3.5 rounded-full font-semibold hover:bg-green-600 hover:border-green-600 transition btn-press shadow-md"

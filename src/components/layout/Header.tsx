@@ -78,6 +78,7 @@ export default function Header({ whatsappHref }: { whatsappHref: string }) {
           </Link>
           <a
             href={whatsappHref}
+            data-wa="header"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"

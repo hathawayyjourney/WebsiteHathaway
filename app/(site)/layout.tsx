@@ -5,6 +5,7 @@ import WhatsAppFloating from '@/src/components/ui/WhatsAppFloating';
 import { getSettings } from '@/src/server/queries/settings';
 import { waLink } from '@/src/lib/whatsapp';
 import JsonLd from '@/src/components/seo/JsonLd';
+import WhatsAppClickTracker from '@/src/components/analytics/WhatsAppClickTracker';
 import { absoluteUrl, DEFAULT_DESCRIPTION, ORGANIZATION_ID, SITE_NAME, SITE_URL } from '@/src/lib/seo';
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -53,6 +54,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <ViewTransition default="page-fade">{children}</ViewTransition>
       <Footer contact={contact} social={social} />
       <WhatsAppFloating href={whatsappHref} />
+      <WhatsAppClickTracker />
     </>
   );
 }
