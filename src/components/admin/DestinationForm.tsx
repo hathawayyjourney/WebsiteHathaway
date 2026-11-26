@@ -41,7 +41,8 @@ export default function DestinationForm({ dest, uploadEnabled }: { dest?: Destin
       <TextField name="seoTitle" label="SEO Title" defaultValue={dest?.seoTitle} />
       <TextField name="metaDescription" label="Meta Description" defaultValue={dest?.metaDescription} />
       <div className="md:col-span-2">
-        <Checkbox name="featured" label="Destinasi unggulan" defaultChecked={dest?.featured} />
+        <Checkbox name="featured" label="Tampilkan di Destinasi Populer (Home)" defaultChecked={dest?.featured} />
+        <p className="text-xs text-brand-muted mt-1">Urutan kartu di Home mengikuti kolom Urutan (angka kecil tampil lebih dulu).</p>
       </div>
     </AdminForm>
   );

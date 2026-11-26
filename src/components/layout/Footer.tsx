@@ -4,13 +4,11 @@ import { MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
 import type { ContactSettings, SocialSettings } from '@/src/lib/settings-defaults';
 import { getImage } from '@/src/lib/images';
+import SocialIcon from '@/src/components/ui/SocialIcon';
+import { socialLinks } from '@/src/lib/social';
 
 export default function Footer({ contact, social }: { contact: ContactSettings; social: SocialSettings }) {
-  const socials = [
-    { label: 'IG', name: 'Instagram', href: social.instagram },
-    { label: 'FB', name: 'Facebook', href: social.facebook },
-    { label: 'YT', name: 'YouTube', href: social.youtube },
-  ];
+  const socials = socialLinks(social);
   const worldMap = getImage('decorWorldMap');
 
   return (
@@ -49,17 +47,17 @@ export default function Footer({ contact, social }: { contact: ContactSettings; 
               Hathaway Journey adalah partner perjalanan terpercaya Anda. Kami menyediakan berbagai pilihan paket tour domestik dan internasional dengan pelayanan terbaik.
             </p>
             <div className="flex items-center gap-4">
-              {/* Only accounts filled in admin: an empty "#" link is a dead link for visitors and crawlers. */}
-              {socials.filter((item) => item.href).map((item) => (
+              {socials.map((item) => (
                 <a
-                  key={item.label}
+                  key={item.icon}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.name}
-                  className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition text-xs font-bold"
+                  title={item.name}
+                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition"
                 >
-                  {item.label}
+                  <SocialIcon name={item.icon} size={16} />
                 </a>
               ))}
             </div>

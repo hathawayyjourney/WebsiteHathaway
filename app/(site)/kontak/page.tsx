@@ -6,7 +6,9 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/src/lib/seo';
 import ContactForm from '@/src/components/contact/ContactForm';
 import CardImage from '@/src/components/ui/CardImage';
-import { getSetting } from '@/src/server/queries/settings';
+import { getSettings } from '@/src/server/queries/settings';
+import SocialIcon from '@/src/components/ui/SocialIcon';
+import { socialLinks } from '@/src/lib/social';
 import Reveal from '@/src/components/ui/Reveal';
 
 export const metadata: Metadata = pageMetadata({
@@ -18,7 +20,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function KontakPage() {
-  const contact = await getSetting('contact');
+  const { contact, social } = await getSettings('contact', 'social');
+  const socials = socialLinks(social);
 
   return (
     <>
@@ -84,6 +87,28 @@ export default async function KontakPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* Social accounts from Admin → Pengaturan → Media Sosial (same source as the footer). */}
+                {socials.length > 0 && (
+                  <div className="mt-8 pt-6 border-t border-gray-100">
+                    <h4 className="font-semibold text-brand-dark mb-4">Media Sosial</h4>
+                    <div className="flex flex-wrap items-center gap-3">
+                      {socials.map((item) => (
+                        <a
+                          key={item.icon}
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={item.name}
+                          title={item.name}
+                          className="w-10 h-10 rounded-full bg-brand-softblue text-brand-navy flex items-center justify-center hover:bg-brand-navy hover:text-white transition btn-press"
+                        >
+                          <SocialIcon name={item.icon} size={18} />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </Reveal>
 

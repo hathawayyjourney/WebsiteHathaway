@@ -117,7 +117,7 @@ Photorealistic minimal photograph, neatly stacked documents, a passport and an e
 | ~~B1~~ | — | — | diganti B6 | — |
 | B6 | `B6.jpg` | ±18:5 | `home/cta-asia.webp` (maks. 2400×668) | Kanan section "Siap Berpetualang" (sisi kiri memudar) — panorama landmark Asia Tenggara dari klien |
 | B2 | `B2.png` | 21:9 | `home/stats-bg.webp` (1600×700) | Latar samar kotak statistik navy |
-| B3 | `B3-indonesia.png`, `B3-asia.png`, `B3-eropa.png`, `B3-timur-tengah.png`, `B3-lainnya.png` | 4:5 | `regions/*.webp` (800×1000) | Kartu "Destinasi Populer" |
+| ~~B3~~ | — | — | tidak dipakai lagi | Kartu "Destinasi Populer" sekarang memakai foto dari Admin → Destinasi |
 | B4 | `B4-airplane.png`, `B4-suitcase.png`, `B4-passport.png` | 1:1 | `decor/*.webp` (800×800, transparan) | Aksen di samping judul section (desktop saja) |
 | B5 | `B5.png` | 21:9 | `decor/world-map.webp` (2400×1000) | Pola samar di belakang "Paket Rekomendasi" |
 
@@ -171,7 +171,8 @@ Minimal flat world map made of small evenly spaced light grey dots on a pure whi
 | C1 | `C1.png` | 4:3 | `content/about-company.webp` | Foto utama Tentang Kami |
 | C2 | `C2-vision.png`, `C2-mission.png` | 4:3 | `content/about-*.webp` | Tekstur kartu Visi (navy) & Misi (merah) |
 | C3 | `C3.png` | 4:3 | `content/booking-help.webp` | Atas kartu "Cara Booking" |
-| C4 | `C4.png` | 16:9 | `content/contact-office.webp` | Atas kartu "Informasi Kontak" |
+| ~~C4~~ | — | — | diganti C8 | — |
+| C8 | `C8.jpg` | ±16:9 | `content/contact-consultation.webp` (1200×670) | Atas kartu "Informasi Kontak" — foto konsultan dari klien |
 | C5 | `C5.png` | 4:3 | `content/faq-help.webp` | Kartu "Masih ada pertanyaan?" di FAQ |
 | C6 | `C6.png` | 4:3 | `content/not-found.webp` | Halaman 404 |
 | C7 | `C7.png` | 1:1 | `content/empty-search.webp` | Saat filter paket tidak menemukan hasil |

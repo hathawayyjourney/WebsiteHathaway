@@ -88,6 +88,8 @@ export const packages = mysqlTable(
     slug: varchar('slug', { length: 191 }).notNull().unique(),
     categoryId: int('category_id').references(() => categories.id, { onDelete: 'set null' }),
     durationDays: int('duration_days').notNull(),
+    // null = automatic (days − 1); set for exceptions such as overnight flights.
+    durationNights: int('duration_nights'),
     countriesLabel: varchar('countries_label', { length: 60 }),
     departureLabel: varchar('departure_label', { length: 60 }),
     summary: varchar('summary', { length: 300 }),

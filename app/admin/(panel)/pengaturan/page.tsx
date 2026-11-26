@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import PageHeader from '@/src/components/admin/PageHeader';
 import AdminForm from '@/src/components/admin/AdminForm';
-import MediaField from '@/src/components/admin/MediaField';
 import { Panel, TextArea, TextField } from '@/src/components/admin/fields';
 import { getSettings } from '@/src/server/queries/settings';
-import { uploadEnabled } from '@/src/server/queries/admin-options';
 import { changeOwnPassword, saveSetting } from '@/src/server/actions/admin/settings';
 
 export const metadata: Metadata = { title: 'Pengaturan' };
@@ -12,8 +10,7 @@ export const metadata: Metadata = { title: 'Pengaturan' };
 const Key = ({ value }: { value: string }) => <input type="hidden" name="key" value={value} />;
 
 export default async function AdminSettingsPage() {
-  const s = await getSettings('contact', 'social', 'wa_templates', 'home_stats', 'home_benefits', 'home_regions', 'legal_pages');
-  const canUpload = uploadEnabled();
+  const s = await getSettings('contact', 'social', 'wa_templates', 'home_stats', 'home_benefits', 'legal_pages');
   const stats = Array.from({ length: 4 }, (_, i) => s.home_stats[i] ?? { value: '', label: '' });
   const benefits = Array.from({ length: 6 }, (_, i) => s.home_benefits[i] ?? { title: '', desc: '' });
 
@@ -76,20 +73,6 @@ export default async function AdminSettingsPage() {
             <div key={i} className="space-y-2">
               <TextField name={`benefits.${i}.title`} label={`Judul ${i + 1}`} defaultValue={b.title} />
               <TextField name={`benefits.${i}.desc`} label="Deskripsi" defaultValue={b.desc} />
-            </div>
-          ))}
-        </AdminForm>
-      </Panel>
-
-      <Panel title="Home — Destinasi Populer (Wilayah)">
-        <AdminForm action={saveSetting}>
-          <Key value="home_regions" />
-          {s.home_regions.map((r, i) => (
-            <div key={r.region} className="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-100 pb-4">
-              <TextField name={`regions.${i}.label`} label={`Label (${r.region})`} defaultValue={r.label} />
-              <div className="md:col-span-2">
-                <MediaField name={`regions.${i}.image`} label="Gambar" defaultValue={r.image} uploadEnabled={canUpload} />
-              </div>
             </div>
           ))}
         </AdminForm>

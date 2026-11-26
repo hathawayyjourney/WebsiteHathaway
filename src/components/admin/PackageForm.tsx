@@ -11,6 +11,7 @@ type PackageValues = {
   code: string | null;
   categoryId: number | null;
   durationDays: number;
+  durationNights: number | null;
   countriesLabel: string | null;
   departureLabel: string | null;
   summary: string | null;
@@ -60,6 +61,7 @@ export default function PackageForm({
           <TextField name="code" label="Kode Paket" defaultValue={pkg?.code} placeholder="HJ-JPN-7D" />
           <SelectField name="categoryId" label="Kategori / Jenis Trip" emptyLabel="— Pilih —" defaultValue={pkg?.categoryId} options={categories.map((c) => ({ value: c.id, label: c.name }))} />
           <TextField name="durationDays" label="Durasi (hari)" type="number" defaultValue={pkg?.durationDays} />
+          <TextField name="durationNights" label="Durasi (malam)" type="number" defaultValue={pkg?.durationNights} hint="Kosongkan untuk otomatis (hari − 1)." />
           <TextField name="countriesLabel" label="Label Negara" defaultValue={pkg?.countriesLabel} placeholder="3 Negara" />
           <TextField name="departureLabel" label="Label Keberangkatan" defaultValue={pkg?.departureLabel} placeholder="Setiap Rabu" hint="Kosongkan untuk memakai tanggal jadwal terdekat." />
           <SelectField name="status" label="Status" defaultValue={pkg?.status ?? 'DRAFT'} options={[{ value: 'DRAFT', label: 'Draft (tidak tampil)' }, { value: 'PUBLISHED', label: 'Published (tampil)' }]} />

@@ -7,6 +7,7 @@ import ActionButton from '@/src/components/admin/ActionButton';
 import { db } from '@/src/db';
 import { categories, packages, schedules } from '@/src/db/schema';
 import { formatRupiah, singleLine } from '@/src/lib/format';
+import { formatDuration } from '@/src/lib/duration';
 import { duplicatePackage, togglePackageStatus } from '@/src/server/actions/admin/packages';
 
 export const metadata: Metadata = { title: 'Paket' };
@@ -19,6 +20,7 @@ export default async function AdminPackagesPage() {
       slug: packages.slug,
       thumbnail: packages.thumbnail,
       durationDays: packages.durationDays,
+      durationNights: packages.durationNights,
       price: packages.price,
       promoPrice: packages.promoPrice,
       status: packages.status,
@@ -56,7 +58,7 @@ export default async function AdminPackagesPage() {
                     <div>
                       <Link href={`/admin/paket/${p.id}`} className="font-semibold text-brand-navy hover:underline">{singleLine(p.name)}</Link>
                       <p className="text-xs text-brand-muted">
-                        {p.durationDays} hari{p.featured && ' · ★ Rekomendasi'}
+                        {formatDuration(p.durationDays, p.durationNights)}{p.featured && ' · ★ Rekomendasi'}
                       </p>
                     </div>
                   </div>

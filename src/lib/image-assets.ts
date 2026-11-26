@@ -71,11 +71,6 @@ export const IMAGE_ASSETS = {
     kind: 'photo',
   },
   homeStatsBg: { id: 'B2', file: 'images/home/stats-bg.webp', width: 1600, height: 700, alt: '', kind: 'photo' },
-  regionIndonesia: { id: 'B3-indonesia', file: 'images/regions/indonesia.webp', width: 800, height: 1000, alt: 'Indonesia', kind: 'photo' },
-  regionAsia: { id: 'B3-asia', file: 'images/regions/asia.webp', width: 800, height: 1000, alt: 'Asia', kind: 'photo' },
-  regionEropa: { id: 'B3-eropa', file: 'images/regions/eropa.webp', width: 800, height: 1000, alt: 'Eropa', kind: 'photo' },
-  regionTimurTengah: { id: 'B3-timur-tengah', file: 'images/regions/timur-tengah.webp', width: 800, height: 1000, alt: 'Timur Tengah', kind: 'photo' },
-  regionLainnya: { id: 'B3-lainnya', file: 'images/regions/lainnya.webp', width: 800, height: 1000, alt: 'Destinasi lainnya', kind: 'photo' },
   decorAirplane: { id: 'B4-airplane', file: 'images/decor/airplane.webp', width: 800, height: 800, alt: '', kind: 'cutout' },
   decorSuitcase: { id: 'B4-suitcase', file: 'images/decor/suitcase.webp', width: 800, height: 800, alt: '', kind: 'cutout' },
   decorPassport: { id: 'B4-passport', file: 'images/decor/passport.webp', width: 800, height: 800, alt: '', kind: 'cutout' },
@@ -86,7 +81,16 @@ export const IMAGE_ASSETS = {
   aboutVision: { id: 'C2-vision', file: 'images/content/about-vision.webp', width: 800, height: 600, alt: '', kind: 'photo' },
   aboutMission: { id: 'C2-mission', file: 'images/content/about-mission.webp', width: 800, height: 600, alt: '', kind: 'photo' },
   bookingHelp: { id: 'C3', file: 'images/content/booking-help.webp', width: 900, height: 675, alt: 'Pelanggan melakukan booking melalui WhatsApp', kind: 'photo' },
-  contactOffice: { id: 'C4', file: 'images/content/contact-office.webp', width: 1200, height: 675, alt: 'Kantor Hathaway Journey', kind: 'photo' },
+  // Replaced C4 at the client's request: consultant helping a customer at the office desk.
+  contactOffice: {
+    id: 'C8',
+    file: 'images/content/contact-consultation.webp',
+    width: 1200,
+    height: 670,
+    alt: 'Konsultan Hathaway Journey melayani pelanggan di kantor',
+    kind: 'photo',
+    position: 'center 30%',
+  },
   faqHelp: { id: 'C5', file: 'images/content/faq-help.webp', width: 900, height: 675, alt: 'Customer service Hathaway Journey', kind: 'photo' },
   notFound: { id: 'C6', file: 'images/content/not-found.webp', width: 1000, height: 750, alt: 'Traveler mencari arah dengan peta', kind: 'photo' },
   emptySearch: { id: 'C7', file: 'images/content/empty-search.webp', width: 600, height: 600, alt: 'Koper kosong dan peta', kind: 'photo' },
@@ -98,11 +102,3 @@ export const IMAGE_ASSETS = {
 
 export type ImageKey = keyof typeof IMAGE_ASSETS;
 
-/** Region code (settings.home_regions[].region) → asset key. */
-export const REGION_IMAGE_KEYS: Record<string, ImageKey> = {
-  INDONESIA: 'regionIndonesia',
-  ASIA: 'regionAsia',
-  EROPA: 'regionEropa',
-  TIMUR_TENGAH: 'regionTimurTengah',
-  LAINNYA: 'regionLainnya',
-};

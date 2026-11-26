@@ -8,6 +8,7 @@ import FinalCTA from '@/src/components/home/FinalCTA';
 import { getSettings } from '@/src/server/queries/settings';
 import { getFeaturedPackages, getPackageFilterOptions } from '@/src/server/queries/packages';
 import { waLink } from '@/src/lib/whatsapp';
+import { getPopularDestinations } from '@/src/server/queries/destinations';
 import { pageMetadata } from '@/src/lib/seo';
 import type { Metadata } from 'next';
 
@@ -15,10 +16,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = pageMetadata({ path: '/' });
 
 export default async function Home() {
-  const [settings, featured, options] = await Promise.all([
-    getSettings('contact', 'wa_templates', 'home_stats', 'home_benefits', 'home_regions'),
+  const [settings, featured, options, popular] = await Promise.all([
+    getSettings('contact', 'wa_templates', 'home_stats', 'home_benefits'),
     getFeaturedPackages(4),
     getPackageFilterOptions(),
+    getPopularDestinations(),
   ]);
   const whatsappHref = waLink(settings.contact.whatsapp, settings.wa_templates.general);
 
@@ -28,7 +30,7 @@ export default async function Home() {
       <SearchPackage destinations={options.destinations} categories={options.categories} />
       <TrustBenefits items={settings.home_benefits} />
       <RecommendedPackages packages={featured} />
-      <PopularDestinations regions={settings.home_regions} />
+      <PopularDestinations destinations={popular} />
       <StatsSection items={settings.home_stats} />
       <FinalCTA whatsappHref={whatsappHref} />
     </main>

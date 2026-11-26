@@ -27,6 +27,7 @@ export const listDestinations = cache(async (region?: Region) => {
       region: destinations.region,
       country: destinations.country,
       image: destinations.image,
+      featured: destinations.featured,
       packageCount,
     })
     .from(destinations)
@@ -34,6 +35,18 @@ export const listDestinations = cache(async (region?: Region) => {
     .orderBy(asc(destinations.sort), asc(destinations.name));
   return rows.map((r) => ({ ...r, packageCount: Number(r.packageCount) }));
 });
+
+/** Destinations ticked "Tampilkan di Destinasi Populer" in admin, in admin order (Home section). */
+export const getPopularDestinations = cache(async () => {
+  await connection();
+  return db
+    .select({ id: destinations.id, name: destinations.name, slug: destinations.slug, image: destinations.image })
+    .from(destinations)
+    .where(eq(destinations.featured, true))
+    .orderBy(asc(destinations.sort), asc(destinations.name));
+});
+
+export type PopularDestination = Awaited<ReturnType<typeof getPopularDestinations>>[number];
 
 export const getDestinationBySlug = cache(async (slug: string) => {
   await connection();

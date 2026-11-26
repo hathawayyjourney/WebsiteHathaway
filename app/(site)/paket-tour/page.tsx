@@ -10,6 +10,8 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/src/lib/seo';
 import Image from 'next/image';
 import { getPackageFilterOptions, searchPackages } from '@/src/server/queries/packages';
+import { REGION_LABELS } from '@/src/server/queries/destinations';
+import { REGIONS } from '@/src/db/enums';
 import { PAGE_SIZE, parsePackageSearchParams } from '@/src/lib/package-filters';
 import Reveal from '@/src/components/ui/Reveal';
 
@@ -41,6 +43,11 @@ export default async function PaketTourPage({ searchParams }: Props) {
   const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
   const to = Math.min(page * PAGE_SIZE, total);
   const emptyImage = getImage('emptySearch');
+  // Region filter lists only regions that have destinations (same rule as the /destinasi tabs);
+  // a region already in the URL stays listed so it can still be unticked.
+  const regionOptions = REGIONS.filter(
+    (r) => options.destinations.some((d) => d.region === r) || filters.region?.includes(r),
+  ).map((r) => ({ value: r, label: REGION_LABELS[r] }));
 
   return (
     <>
@@ -60,7 +67,7 @@ export default async function PaketTourPage({ searchParams }: Props) {
             {/* Sidebar / Filters (hidden on mobile until the Filter button is tapped) */}
             <input id="mobile-filter-toggle" type="checkbox" className="peer sr-only" />
             <aside className="w-full lg:w-1/4 hidden peer-checked:block lg:block">
-              <FilterPanel current={filters} destinations={options.destinations} categories={options.categories} />
+              <FilterPanel current={filters} regions={regionOptions} destinations={options.destinations} categories={options.categories} />
             </aside>
 
             {/* Main Content Area */}

@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/src/lib/seo';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import Breadcrumb from '@/src/components/ui/Breadcrumb';
 import PageHero from '@/src/components/ui/PageHero';
 import { getImage } from '@/src/lib/images';
 import DestinationCard from '@/src/components/destination/DestinationCard';
-import { REGIONS, type Region } from '@/src/db/enums';
+import type { Region } from '@/src/db/enums';
 import { listDestinations, REGION_LABELS } from '@/src/server/queries/destinations';
 import Reveal from '@/src/components/ui/Reveal';
 
@@ -17,17 +18,24 @@ export const metadata: Metadata = pageMetadata({
   image: getImage('heroAsiaCollage'),
 });
 
-// Sitemap FSD: Indonesia, Asia, Eropa, Timur Tengah, Destinasi Lain
+// Tab order (sitemap FSD: Indonesia, Asia, Eropa, Timur Tengah, Destinasi Lain). Only tabs with destinations are shown.
 const TABS: Region[] = ['INDONESIA', 'ASIA', 'EROPA', 'TIMUR_TENGAH', 'LAINNYA'];
+const OWN_TAB = TABS.slice(0, 4);
+
+// "Destinasi Lain" groups every region without its own tab (Afrika, Amerika, Lainnya).
+function inTab(tab: Region, destinationRegion: Region): boolean {
+  return tab === 'LAINNYA' ? !OWN_TAB.includes(destinationRegion) : destinationRegion === tab;
+}
 
 export default async function DestinasiPage({ searchParams }: { searchParams: Promise<{ region?: string }> }) {
   const regionParam = (await searchParams).region?.toUpperCase();
-  const region = (REGIONS as readonly string[]).includes(regionParam ?? '') ? (regionParam as Region) : undefined;
-  // "Destinasi Lain" also groups regions without their own tab.
   const all = await listDestinations();
-  const destinations = region
-    ? all.filter((d) => (region === 'LAINNYA' ? !TABS.slice(0, 4).includes(d.region) : d.region === region))
-    : all;
+  const visibleTabs = TABS.filter((tab) => all.some((d) => inTab(tab, d.region)));
+
+  const region = regionParam ? (regionParam as Region) : undefined;
+  // Old links to an empty or unknown region go back to the full list (canonical is /destinasi anyway).
+  if (region && !visibleTabs.includes(region)) redirect('/destinasi');
+  const destinations = region ? all.filter((d) => inTab(region, d.region)) : all;
 
   const tabClass = (active: boolean) =>
     `px-6 py-3 rounded-full text-sm font-semibold transition ${
@@ -43,7 +51,7 @@ export default async function DestinasiPage({ searchParams }: { searchParams: Pr
 
         <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-10">
           <Link href="/destinasi" className={tabClass(!region)}>SEMUA</Link>
-          {TABS.map((r) => (
+          {visibleTabs.map((r) => (
             <Link key={r} href={`/destinasi?region=${r.toLowerCase()}`} className={tabClass(region === r)}>
               {REGION_LABELS[r].toUpperCase()}
             </Link>

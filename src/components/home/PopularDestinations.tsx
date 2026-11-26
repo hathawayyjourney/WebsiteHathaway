@@ -1,17 +1,24 @@
 import DestinationCard from '../destination/DestinationCard';
-import { regionPageHref } from '@/src/lib/regions';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { SETTINGS_DEFAULTS, type HomeRegion } from '@/src/lib/settings-defaults';
 import Decor from '../ui/Decor';
-import { getImage, pickImage } from '@/src/lib/images';
-import { REGION_IMAGE_KEYS } from '@/src/lib/image-assets';
+import { getImage } from '@/src/lib/images';
 import Reveal from '@/src/components/ui/Reveal';
+import type { PopularDestination } from '@/src/server/queries/destinations';
 
-// Default photo per region, used to tell whether an admin has replaced it.
-const DEFAULT_IMAGES = new Map(SETTINGS_DEFAULTS.home_regions.map((r) => [r.region, r.image]));
+// Columns follow the number of cards so a short list doesn't leave empty slots.
+function gridColumns(count: number): string {
+  if (count >= 5) return 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5';
+  if (count === 4) return 'grid-cols-2 lg:grid-cols-4';
+  return 'grid-cols-2 sm:grid-cols-3';
+}
 
-export default function PopularDestinations({ regions }: { regions: HomeRegion[] }) {
+// Destinations ticked "Tampilkan di Destinasi Populer" in Admin → Destinasi (name, photo and order come from there).
+export default function PopularDestinations({ destinations }: { destinations: PopularDestination[] }) {
+  if (destinations.length === 0) return null;
+  // On the 2-column phone grid an odd last card spans the full row instead of leaving a hole.
+  const oddOnPhone = destinations.length % 2 === 1;
+
   return (
     <section className="relative py-8 container mx-auto px-4 lg:px-8 max-w-[1250px]">
       <Decor image={getImage('decorPassport')} className="-top-12 right-0 xl:right-10 w-32 rotate-12" floatDelay={0.8} />
@@ -25,27 +32,21 @@ export default function PopularDestinations({ regions }: { regions: HomeRegion[]
       </Reveal>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
-        {regions.map((item, i) => (
-          <Reveal key={item.region} delay={i * 80}>
-          <DestinationCard
-            data={{
-              id: item.region,
-              name: item.label,
-              image: REGION_IMAGE_KEYS[item.region]
-                ? pickImage(REGION_IMAGE_KEYS[item.region], item.image, DEFAULT_IMAGES.get(item.region) ?? item.image)
-                : item.image,
-              // Regions with a landing page link there (SEO); "Destinasi Lain" keeps the filtered list.
-              href: regionPageHref(item.region) ?? `/destinasi?region=${item.region.toLowerCase()}`,
-            }}
-          />
+      <div className={`grid ${gridColumns(destinations.length)} gap-4 mb-10`}>
+        {destinations.map((dest, i) => (
+          <Reveal
+            key={dest.id}
+            delay={i * 80}
+            className={oddOnPhone && i === destinations.length - 1 ? 'col-span-2 sm:col-span-1' : undefined}
+          >
+            <DestinationCard data={{ id: dest.slug, name: dest.name.toUpperCase(), image: dest.image ?? '/logo.png' }} />
           </Reveal>
         ))}
       </div>
 
       {/* View All */}
       <div className="flex justify-center">
-        <Link 
+        <Link
           href="/destinasi"
           className="flex items-center gap-2 bg-white text-brand-navy border border-gray-300 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-50 transition"
         >
